@@ -13,9 +13,10 @@ interface JobCardProps {
 
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
     const [saved, setSave] = useState(false);
-
+    
     return (
-        <div className="job-card border p-4 rounded shadow mb-4">
+        <div className="job-card"
+        style={{ caretColor: 'transparent' }}>
             <h2>{job.title}</h2>
             <h3>{job.company}</h3>
             <button onClick={() => setSave(!saved)}>

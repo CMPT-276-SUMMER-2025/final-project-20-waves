@@ -1,7 +1,7 @@
+import './index.css';
+import './style.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './style.css';
-import './index.css';
 import JobCard from './components/JobCard';
 
 const sampleJob = {
@@ -12,6 +12,11 @@ const sampleJob = {
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>
-    <JobCard job={sampleJob} />
+    <div className="job-left">
+      {/* Left side: JobCard */}
+        <JobCard job={sampleJob} />
+
+      {/* Right side: empty */}
+    </div>
   </React.StrictMode>
 );
