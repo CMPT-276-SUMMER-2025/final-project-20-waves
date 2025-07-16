@@ -15,9 +15,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <div className="bg-green-500 text-white mx-auto px-20">
-          This container has horizontal padding of 5rem (80px) on both sides.
-        </div>
 
         <div className="search-bar-container">
           
