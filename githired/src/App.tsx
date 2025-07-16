@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import JobSearch from "./subpages/JobSearch";
 import Portfolio from "./subpages/Portfolio";
 import Interview from "./subpages/Interview";
+import "./App.css";
 
 function App() {
   const [results, setResults] = useState([]);
@@ -14,7 +15,12 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <div className="bg-green-500 text-white mx-auto px-20">
+          This container has horizontal padding of 5rem (80px) on both sides.
+        </div>
+
         <div className="search-bar-container">
+          
           <SearchBar setResults={setResults} />
           {results && results.length > 0 && (
             <SearchResultsList results={results} />
