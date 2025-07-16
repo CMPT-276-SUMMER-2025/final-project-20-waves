@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { SearchBar } from "./components/searchbar";
+import { SearchBar } from "./components/SearchBar";
 import { SearchResultsList } from "./components/SearchResultsList";
 
 function App() {
@@ -9,6 +9,9 @@ function App() {
   return (
     <div className="App">
       <div className="search-bar-container">
+        <div>
+          <SearchBar />
+        </div>
         <SearchBar setResults={setResults} />
         {results && results.length > 0 && (
           <SearchResultsList results={results} />
@@ -17,5 +20,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
