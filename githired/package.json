@@ -19,5 +19,10 @@
 >>>>>>> 081830b787678924b1d3d54ac3c9d680722e8c80
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0"
   }
 }
