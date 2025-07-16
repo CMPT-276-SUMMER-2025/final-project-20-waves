@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useState } from "react";
 
 import { SearchBar } from "./components/searchbar";
@@ -8,14 +8,13 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import JobSearch from "./subpages/JobSearch";
 import Portfolio from "./subpages/Portfolio";
 import Interview from "./subpages/Interview";
-import ReactDOM from 'react-dom/client';
-import JobCard from './components/JobCard';
-import JobInfo from './components/JobInfo';
+import JobCard from "./components/JobCard";
+import JobInfo from "./components/JobInfo";
 
 const sampleJob = {
-  id: '1',
-  title: 'Frontend Developer',
-  company: 'Tech Corp',
+  id: "1",
+  title: "Frontend Developer",
+  company: "Tech Corp",
 };
 
 function App() {
@@ -36,8 +35,8 @@ function App() {
         </div>
 
         <nav>
-          <Link to="/job-search">JobSearch</Link> | 
-          <Link to="/portfolio">Portfolio</Link> | 
+          <Link to="/job-search">JobSearch</Link> |
+          <Link to="/portfolio">Portfolio</Link> |
           <Link to="/interview">Interview</Link>
         </nav>
 
@@ -49,9 +48,9 @@ function App() {
         </Routes>
       </div>
       <div className="job-left">
-      <JobCard job={sampleJob} onClick={handleCardClick } />
-      {selectedJob && <JobInfo onClose={() => setSelectedJob(null)} />}
-    </div>
+        <JobCard job={sampleJob} onClick={handleCardClick} />
+        {selectedJob && <JobInfo onClose={() => setSelectedJob(null)} />}
+      </div>
     </Router>
   );
 }
