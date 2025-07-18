@@ -18,7 +18,7 @@ const sampleJob = {
   company: 'Tech Corp',
 };
 
-function AppContent() {
+function App() {
   const [results, setResults] = useState([]);
   const [selectedJob, setSelectedJob] = useState<typeof sampleJob | null>(null);
 
@@ -34,7 +34,7 @@ function AppContent() {
             <SearchResultsList results={results} />
           )}
         </div>
-      )}
+      
 
       {location.pathname === "/" && (
         <nav>
@@ -58,3 +58,4 @@ function AppContent() {
     </Router>
   );
 }
+export default App;

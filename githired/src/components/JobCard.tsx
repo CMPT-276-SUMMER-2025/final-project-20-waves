@@ -5,7 +5,7 @@ interface Job{
     id: string;
     title: string;
     company: string;
-    snippet: string;
+    snippet?: string;
 }
 
 interface JobCardProps {
