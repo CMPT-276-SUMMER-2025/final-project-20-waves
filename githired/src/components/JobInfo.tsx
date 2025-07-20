@@ -2,13 +2,11 @@ import React from 'react';
 import './JobInfo.css';
 
 interface Job {
-  id: string | number;
+  id: string;
   title: string;
   company: string;
   snippet?: string;
-  // Add other fields from your API here, e.g. description, location, etc.
-  description?: string;
-  location?: string;
+  link: string;
 }
 
 interface JobInfoProps {
@@ -17,19 +15,23 @@ interface JobInfoProps {
 }
 
 const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
-  // Stop click inside details from closing
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
+  const stopClick = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
     <div className="jobinfo-overlay" onClick={onClose}>
-      <div className="jobinfo-content" onClick={handleContentClick}>
-        <button className="close-btn" onClick={onClose}>Close ×</button>
-        <h2>{job.title}</h2>
-        <h3>{job.company}</h3>
-        <p><strong>Location:</strong> {job.location || 'N/A'}</p>
-        <p>{job.description || job.snippet || 'No description available.'}</p>
+      <div className="jobinfo-card" onClick={stopClick}>
+        <button className="close-button" onClick={onClose}>×</button>
+        <h1>{job.title}</h1>
+        <h2>{job.company}</h2>
+        <p>{job.snippet || "No description available."}</p>
+        <a
+          href={job.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="external-link-button"
+        >
+          View Full Job Posting
+        </a>
       </div>
     </div>
   );

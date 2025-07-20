@@ -6,6 +6,7 @@ interface Job {
   title: string;
   company: string;
   snippet?: string;
+  link: string;
 }
 
 interface JobCardProps {

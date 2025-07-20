@@ -4,29 +4,31 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.7);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
-.jobinfo-content {
-  background: white;
+.jobinfo-card {
+  background: #fff;
   padding: 2rem;
-  border-radius: 8px;
-  max-width: 600px;
-  max-height: 80vh;
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-.close-btn {
+.close-button {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 1rem;
+  right: 1rem;
+  background: none;
   border: none;
-  background: transparent;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
 }
