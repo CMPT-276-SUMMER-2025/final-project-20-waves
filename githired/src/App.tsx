@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,6 +11,8 @@ import {
 import JobSearch from './subpages/JobSearch';
 import Portfolio from './subpages/Portfolio';
 import Interview from './subpages/Interview';
+
+import '/style.css';
 
 function AppContent() {
   const location = useLocation();
@@ -30,9 +33,9 @@ function AppContent() {
       )}
 
       {location.pathname === '/' && (
-        <nav>
-          <Link to="/job-search">JobSearch</Link> |{' '}
-          <Link to="/portfolio">Portfolio</Link> |{' '}
+        <nav className="nav-links">
+          <Link to="/job-search">JobSearch</Link> 
+          <Link to="/portfolio">Portfolio</Link>
           <Link to="/interview">Interview</Link>
         </nav>
       )}

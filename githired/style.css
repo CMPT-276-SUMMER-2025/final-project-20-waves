@@ -1,0 +1,26 @@
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links {
+  background-color: #785964;  
+  padding: 25px 0;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nav-links a {
+  color: #e3d3d9;  
+  margin: 0 80px;
+  text-decoration: none;
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #c3a9b2;  
+}
+
