@@ -3,12 +3,13 @@ import { FaSearch } from "react-icons/fa";
 
 export const SearchBar = ({ setResults }) => {
   const [input, setInput] = useState("");
+    const [location, setLocation] = useState(""); 
 
-  const fetchData = async (value) => {
+  const fetchData = async (value, locationValue) => {
     const response = await fetch("http://localhost:5000/api/jobs", {
       method: "POST", // <-- must be POST
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ keywords: value, location: "Bern" }),
+      body: JSON.stringify({ keywords: value, location: locationValue }),
     });
 
     if (!response.ok) {
@@ -21,19 +22,24 @@ export const SearchBar = ({ setResults }) => {
     setResults(data.jobs || []);
   };
 
-  const handleChange = (value) => {
-    setInput(value);
-    fetchData(value);
+  const handleSearch = () => {
+    fetchData(input, location);
   };
 
   return (
     <div className="input-wrapper">
       <FaSearch id="search-icon" />
       <input
-        placeholder="Type to search..."
+        placeholder="Keyword (e.g., frontend developer)"
         value={input}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => setInput(e.target.value)}
       />
+      <input
+        placeholder="Location (e.g., Vancouver)"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+      />
+      <button onClick={handleSearch}>Search</button>
     </div>
   );
 };

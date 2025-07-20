@@ -12,7 +12,6 @@
   display: grid;              /* grid */
   grid-template-columns: 1fr 1fr;  /* grid-cols-2 */
   width: 100%;                /* w-full */
-  min-height: 100vh;          /* min-h-screen */
 }
 
 .single-card{
@@ -43,8 +42,3 @@
     padding-left:7%;
 }
 
-.single-card button {
-    border-color:red;
-    margin-right: 10%;
-    align-self: flex-end;
-}
