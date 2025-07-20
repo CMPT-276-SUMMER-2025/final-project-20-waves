@@ -17,13 +17,18 @@ interface JobInfoProps {
 const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
   const stopClick = (e: React.MouseEvent) => e.stopPropagation();
 
+  const cleanSnippet = job.snippet
+  ?.replace(/<[^>]+>/g, "")        // remove HTML tags like <b>
+  .replace(/&nbsp;/g, " ")         // convert &nbsp; to regular space
+  .trim();
+
   return (
     <div className="jobinfo-overlay" onClick={onClose}>
       <div className="jobinfo-card" onClick={stopClick}>
         <button className="close-button" onClick={onClose}>×</button>
         <h1>{job.title}</h1>
         <h2>{job.company}</h2>
-        <p>{job.snippet || "No description available."}</p>
+        <p>{cleanSnippet}</p>
         <a
           href={job.link}
           target="_blank"
