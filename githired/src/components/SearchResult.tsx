@@ -2,9 +2,10 @@ export const SearchResult = ({ result }) => {
   return (
     <div
       className="search-result"
-      onClick={(e) => alert(`You selected ${result}!`)}
+      onClick={() => alert(`You selected ${result.title} at ${result.company}`)}
     >
-      {result}
+      <h3>{result.title}</h3>
+      <p>{result.company}</p>
     </div>
   );
 };

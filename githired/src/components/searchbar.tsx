@@ -4,20 +4,21 @@ import { FaSearch } from "react-icons/fa";
 export const SearchBar = ({ setResults }) => {
   const [input, setInput] = useState("");
 
-  const fetchData = (value) => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((json) => {
-        const results = json.filter((user) => {
-          return (
-            value &&
-            user &&
-            user.name &&
-            user.name.toLowerCase().includes(value)
-          );
-        });
-        setResults(results);
-      });
+  const fetchData = async (value) => {
+    const response = await fetch("http://localhost:5000/api/jobs", {
+      method: "POST", // <-- must be POST
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ keywords: value, location: "Bern" }),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to fetch jobs:", response.statusText);
+      setResults([]);
+      return;
+    }
+
+    const data = await response.json();
+    setResults(data.jobs || []);
   };
 
   const handleChange = (value) => {
@@ -36,3 +37,5 @@ export const SearchBar = ({ setResults }) => {
     </div>
   );
 };
+
+export default SearchBar;
