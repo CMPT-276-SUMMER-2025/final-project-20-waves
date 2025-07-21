@@ -1,5 +1,5 @@
 import React from "react";
-import "/style.css";
+import "../css/style.css";
 import { Link } from 'react-router-dom';
 
 const Interview: React.FC = () => {

@@ -1,0 +1,21 @@
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 300px;
+  align-items: flex-end;
+}

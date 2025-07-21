@@ -1,13 +1,42 @@
-import React, { useState } from 'react';
-import "/style.css";
+import React, { useState, useEffect } from 'react';
+import "../css/portfolio.css";
 
 const Portfolio: React.FC = () => {
   const [nameText, nsetText] = useState('');
   const [birthText, bsetText] = useState('');
   const [emailText, esetText] = useState('');
   const [addressText, asetText] = useState('');
-
   const [image, setImage] = useState<string | null>(null);
+
+  // Load saved values when the component mounts
+  useEffect(() => {
+    nsetText(localStorage.getItem('name') || '');
+    bsetText(localStorage.getItem('birth') || '');
+    esetText(localStorage.getItem('email') || '');
+    asetText(localStorage.getItem('address') || '');
+    setImage(localStorage.getItem('profileImage'));
+  }, []);
+
+  // Save values to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('name', nameText);
+  }, [nameText]);
+
+  useEffect(() => {
+    localStorage.setItem('birth', birthText);
+  }, [birthText]);
+
+  useEffect(() => {
+    localStorage.setItem('email', emailText);
+  }, [emailText]);
+
+  useEffect(() => {
+    localStorage.setItem('address', addressText);
+  }, [addressText]);
+
+  useEffect(() => {
+    if (image) localStorage.setItem('profileImage', image);
+  }, [image]);
 
   const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -19,38 +48,36 @@ const Portfolio: React.FC = () => {
   };
 
   return (
-    <div>
-      <input
-        value={nameText}
-        onChange={(e) => nsetText(e.target.value)}
-        placeholder="Your name"
-      />
-
-      <input
-        value={birthText}
-        onChange={(e) => bsetText(e.target.value)}
-        placeholder="MM/DD/YYYY"
-      />
-
-      <input
-        value={emailText}
-        onChange={(e) => esetText(e.target.value)}
-        placeholder="Your email"
-      />
-
-      <input
-        value={addressText}
-        onChange={(e) => asetText(e.target.value)}
-        placeholder="address"
-      />
-
+    <div className="profile-container">
+      <div className="profile-input">
+        <input
+          value={nameText}
+          onChange={(e) => nsetText(e.target.value)}
+          placeholder="Your name"
+        />
+        <input
+          value={birthText}
+          onChange={(e) => bsetText(e.target.value)}
+          placeholder="MM/DD/YYYY"
+        />
+        <input
+          value={emailText}
+          onChange={(e) => esetText(e.target.value)}
+          placeholder="Your email"
+        />
+        <input
+          value={addressText}
+          onChange={(e) => asetText(e.target.value)}
+          placeholder="Address"
+        />
+      </div>
 
       <div>
         <img
+          className="profile-img"
           src={image || '/default-profile.png'}
           alt="Profile"
           onClick={() => document.getElementById('fileInput')?.click()}
-          style={{ width: 150, height: 150, borderRadius: '50%', cursor: 'pointer' }}
         />
         <input
           type="file"
