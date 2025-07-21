@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import JobSearch from './subpages/JobSearch';
 import Portfolio from './subpages/Portfolio';
 import Interview from './subpages/Interview';
-import Home from './subpages/home';
+import Home from './subpages/Home';
 
 
 const NavBar: React.FC = () => {
