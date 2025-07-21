@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState } from 'react';
+
 import "/style.css";
 
 const Portfolio: React.FC = () => {
-  return <h1></h1>;
+    const [text, setText] = useState('');
+
+  return (
+    <input
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      placeholder="Type here"
+    />
+  );
 };
 
 export default Portfolio;
