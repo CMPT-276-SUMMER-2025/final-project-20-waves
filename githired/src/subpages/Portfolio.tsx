@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import "/style.css";
 
 const Portfolio: React.FC = () => {
-  const [text, setText] = useState('');
+  const [nameText, nsetText] = useState('');
+  const [birthText, bsetText] = useState('');
+  const [emailText, esetText] = useState('');
+  const [addressText, asetText] = useState('');
+
   const [image, setImage] = useState<string | null>(null);
 
   const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,10 +21,29 @@ const Portfolio: React.FC = () => {
   return (
     <div>
       <input
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Type here"
+        value={nameText}
+        onChange={(e) => nsetText(e.target.value)}
+        placeholder="Your name"
       />
+
+      <input
+        value={birthText}
+        onChange={(e) => bsetText(e.target.value)}
+        placeholder="MM/DD/YYYY"
+      />
+
+      <input
+        value={emailText}
+        onChange={(e) => esetText(e.target.value)}
+        placeholder="Your email"
+      />
+
+      <input
+        value={addressText}
+        onChange={(e) => asetText(e.target.value)}
+        placeholder="address"
+      />
+
 
       <div>
         <img
