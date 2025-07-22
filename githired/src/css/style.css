@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -6,40 +5,25 @@
 }
 
 .nav-links {
-  background-color: #ffffff;  
+  background-color: #785964;  
   display: flex;
   align-items: center;    
+  justify-content: center; 
   width: 100%;
   height: 60px;
-  position: relative;
-  border-bottom: 2px solid #000000; 
-}
-
-.nav-links img {
-  height: 60px;
-  margin-left: 20px;
-  margin-right: 40px; 
-  position: static;   
-}
-
-.nav-links .nav-link-text {
-  display: flex;
-  align-items: center;
-  margin-left: 0; 
-}
-
-.nav-links a:hover {
-  color: #4c8dee;
-  text-decoration: underline;
 }
 
 .nav-links a {
-  color: #000000;  
-  margin: 0 20px;
+  color: #e3d3d9;  
+  margin: 0 80px;
   text-decoration: none;
   font-family: 'Arial', sans-serif;
   font-weight: 600;
   transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #c3a9b2;  
 }
 
 
