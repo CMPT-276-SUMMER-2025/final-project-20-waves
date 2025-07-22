@@ -1,5 +1,11 @@
 import React from "react";
+<<<<<<< HEAD
 import "../css/style.css";
+=======
+
+import "./Home.css"
+
+>>>>>>> 021408c4cd9f9a7689106742486918af4f57e259
 import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
