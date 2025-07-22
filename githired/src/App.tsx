@@ -9,28 +9,22 @@ import Home from './subpages/Home';
 
 const NavBar: React.FC = () => {
   const location = useLocation();
-
-  if (location.pathname === '/') {
-    return (
-      <nav className="nav-links">
-        <Link to="/job-search">JobSearch</Link>
-        <Link to="/portfolio">Portfolio</Link>
-        <Link to="/interview">Interview</Link>
-      </nav>
-    );
-  } else {
     return (
       <nav className="nav-links">
         <Link to="/">
           <img
             src="images/Logo.png"
             alt="Home"
-            style={{ height: '100px' }}
           />
         </Link>
+        <div className="nav-link-text">
+          <Link to="/job-search">Job Search</Link>
+          <Link to="/portfolio">Portfolio</Link>
+          <Link to="/interview">Interview</Link>
+        </div>
+        
       </nav>
     );
-  }
 };
 
 const App: React.FC = () => {

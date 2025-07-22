@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import './searchbar.css'
 
-export const SearchBar = ({ setResults }) => {
+type SearchBarProps = {
+  setResults: (results: any[]) => void;
+};
+
+export const SearchBar = ({ setResults }: SearchBarProps) => {
   const [input, setInput] = useState("");
     const [location, setLocation] = useState(""); 
 
   const fetchData = async (value, locationValue) => {
     const response = await fetch("http://localhost:5000/api/jobs", {
-      method: "POST", // <-- must be POST
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ keywords: value, location: locationValue }),
     });
@@ -27,8 +31,7 @@ export const SearchBar = ({ setResults }) => {
   };
 
   return (
-    <div className="input-wrapper">
-      <FaSearch id="search-icon" />
+    <div className="search-bar">
       <input
         placeholder="Keyword (e.g., frontend developer)"
         value={input}

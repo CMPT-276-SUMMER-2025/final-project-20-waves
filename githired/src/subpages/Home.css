@@ -27,7 +27,11 @@ h1 {
 }
 
 .home-btn {
+<<<<<<< HEAD
   background-color: #4c8dee;
+=======
+  background-color: #6fb2de;
+>>>>>>> design/211-home-page
   color: #fff;
   padding: 12px 32px;
   border-radius: 8px;
