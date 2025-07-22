@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite,"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.6.0",

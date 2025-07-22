@@ -16,7 +16,7 @@ const sampleJob = {
 };
 
 const JobSearch = () => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any[]>([]);
   const [selectedJob, setSelectedJob] = useState<typeof sampleJob | null>(null);
 
   const handleCardClick = () => {
@@ -27,14 +27,16 @@ return (
   <>
     <div>
       <SearchBar setResults={setResults} />
-      {results && results.length > 0 && <SearchResultsList results={results} />}
-      {/* Other JobSearch content here */}
+
     </div>
 
-    <div className="job-left">
-      <JobCard job={sampleJob} onClick={handleCardClick} />
-      {selectedJob && <JobInfo onClose={() => setSelectedJob(null)} />}
-    </div>
+  <div className="job-left">
+    {results.map((job) => (
+      <JobCard key={job.id} job={job} onClick={() => setSelectedJob(job)} />
+    ))}
+    {selectedJob && <JobInfo job={selectedJob} onClose={() => setSelectedJob(null)} />}
+  </div>
+
   </>
 );
 
