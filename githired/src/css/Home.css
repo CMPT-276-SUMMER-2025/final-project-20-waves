@@ -1,10 +1,17 @@
+body {
+  background-color: #c3a9b2;
+  margin: 0; 
+  min-height: 100vh;
+}
+
 .background-rotator {
-  position: absolute;
+  position: fixed;   
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+  width: 100vw;    
+  height: 100vh;    
+  overflow: hidden;
+  z-index: -1;   
 }
 
 .bg-image {
@@ -48,4 +55,55 @@
 
 .home-btn:hover {
   background-color: #c3a9b2;
+}
+
+.card-slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 250px;
+  margin-top: 200px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-slide {
+  position: absolute;
+  width: 1000px;
+  height: 250px; 
+  display: flex;
+  align-items: center;
+  background-color: #785964; 
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 1s ease-in-out;
+  border-radius: 15px;       
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+}
+
+.card-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.card-slide.exit {
+  opacity: 0;
+  transform: translateX(100%);
+  z-index: 1;
+}
+
+.card-slide img {
+  width: 40%;
+  margin: 0 30px; 
+  width: 200px;
+  height: 200px; 
+  border-radius: 10px;       
+}
+
+.card-slide-content {
+  display: flex;
+  flex-direction: column; 
+  color: #ffffff
 }
