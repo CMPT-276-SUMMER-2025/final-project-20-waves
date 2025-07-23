@@ -9,11 +9,12 @@
 
 .bg-image {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100%; 
+  height: 400px;
+  object-fit: cover; 
   opacity: 0;
   transition: opacity 2s ease-in-out;
+  filter: grayscale(100%);
 }
 
 .bg-image.visible {
@@ -21,32 +22,30 @@
 }
 
 .home-container {
-  position: relative;
   z-index: 1;
-  text-align: center;
-  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-logo {
-  height: 120px;
-  margin: 20px 0;
-}
-
-.home-buttons {
-  margin-top: 40px;
+  margin-top: 30px; 
+  height: 200px;
+  width: auto; 
 }
 
 .home-btn {
   margin: 0 10px;
   padding: 10px 20px;
   text-decoration: none;
-  background-color: white;
-  color: black;
+  background-color: #785964;  
+  color: rgb(255, 255, 255);
   border-radius: 6px;
-  font-weight: bold;
+  font-family: 'Bebas Neue', sans-serif;
   transition: background 0.3s;
 }
 
 .home-btn:hover {
-  background-color: #ddd;
+  background-color: #c3a9b2;
 }

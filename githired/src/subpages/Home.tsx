@@ -32,9 +32,8 @@ const Home: React.FC = () => {
       </div>
 
       <div className="home-container">
-        <h1>Welcome to</h1>
         <img src="/images/Logo.png" alt="Logo" className="home-logo" />
-        <div className="home-buttons">
+        <div>
           <Link to="/login" className="home-btn">Login</Link>
           <Link to="/signup" className="home-btn">Sign Up</Link>
         </div>
