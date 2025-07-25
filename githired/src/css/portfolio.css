@@ -4,7 +4,6 @@
   align-items: center;
   gap: 80px;
   margin-top: 100px; 
-  position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -37,14 +36,18 @@
   border-color: #785964;
 }
 
+.portfolio-container {
+  position: relative; 
+  margin-top: 50px; 
+  display:flex; 
+}
+
 .tab-buttons {
   display: flex;
-  border-bottom: 2px solid #ccc;
+  flex-direction: column; 
 }
 
 .tab-buttons button {
-  background: none;
-  border: none;
   padding: 12px 20px;
   cursor: pointer;
   font-size: 16px;
@@ -63,6 +66,13 @@
   border: 1px solid #ddd;
   border-top: none;
 }
+
+.autocomplete-list {
+  position: absolute;
+  z-index: 10;
+  background: white;
+}
+
 
 
 

@@ -1,43 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "../css/portfolio.css";
 
 const Portfolio: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('education');
+  const [activeTab, setActiveTab] = useState('Education');
 
-  const [nameText, nsetText] = useState('');
-  const [birthText, bsetText] = useState('');
-  const [emailText, esetText] = useState('');
-  const [addressText, asetText] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    birth: '',
+    email: '',
+    address: ''
+  });
+
   const [image, setImage] = useState<string | null>(null);
 
+  // Load saved data from localStorage on mount
   useEffect(() => {
-    nsetText(localStorage.getItem('name') || '');
-    bsetText(localStorage.getItem('birth') || '');
-    esetText(localStorage.getItem('email') || '');
-    asetText(localStorage.getItem('address') || '');
+    setFormData({
+      name: localStorage.getItem('name') || '',
+      birth: localStorage.getItem('birth') || '',
+      email: localStorage.getItem('email') || '',
+      address: localStorage.getItem('address') || ''
+    });
     setImage(localStorage.getItem('profileImage'));
   }, []);
 
+  // Save each form field individually on change
   useEffect(() => {
-    localStorage.setItem('name', nameText);
-  }, [nameText]);
+    localStorage.setItem('name', formData.name);
+  }, [formData.name]);
 
   useEffect(() => {
-    localStorage.setItem('birth', birthText);
-  }, [birthText]);
+    localStorage.setItem('birth', formData.birth);
+  }, [formData.birth]);
 
   useEffect(() => {
-    localStorage.setItem('email', emailText);
-  }, [emailText]);
+    localStorage.setItem('email', formData.email);
+  }, [formData.email]);
 
   useEffect(() => {
-    localStorage.setItem('address', addressText);
-  }, [addressText]);
+    localStorage.setItem('address', formData.address);
+  }, [formData.address]);
 
   useEffect(() => {
     if (image) localStorage.setItem('profileImage', image);
   }, [image]);
 
+  // Update formData state by field
+  const handleChangeProfile = (field: keyof typeof formData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Handle image file input and convert to base64 string
   const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -46,6 +59,63 @@ const Portfolio: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  // Autocomplete related states
+  const [inputText, setInputText] = useState('');
+  const [filtered, setFiltered] = useState<string[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  // Ref for debounce timeout
+  const timeoutRef = useRef<number | null>(null);
+
+  // Fetch suggestions from backend API
+  const fetchSuggestions = (query: string) => {
+    fetch('http://localhost:5000/api/universities', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        setFiltered(data.suggestions || []);
+        setShowDropdown(data.suggestions?.length > 0);
+      })
+      .catch(() => {
+        setFiltered([]);
+        setShowDropdown(false);
+      });
+  };
+
+  // Debounced input change handler
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputText(value);
+
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = window.setTimeout(() => {
+      if (value.trim()) {
+        fetchSuggestions(value);
+      } else {
+        setFiltered([]);
+        setShowDropdown(false);
+      }
+    }, 300);
+  };
+
+  // When user selects a suggestion
+  const handleSelect = (val: string) => {
+    setInputText(val);
+    setFiltered([]);
+    setShowDropdown(false);
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <div>
@@ -68,60 +138,67 @@ const Portfolio: React.FC = () => {
 
         <div className="profile-input">
           <input
-            value={nameText}
-            onChange={(e) => nsetText(e.target.value)}
-            placeholder="Your name"
+            value={formData.name}
+            onChange={e => handleChangeProfile('name', e.target.value)}
+            placeholder="Name"
           />
           <input
-            value={birthText}
-            onChange={(e) => bsetText(e.target.value)}
-            placeholder="MM/DD/YYYY"
+            value={formData.birth}
+            onChange={e => handleChangeProfile('birth', e.target.value)}
+            placeholder="Birth"
           />
         </div>
         <div className="profile-input">
           <input
-            value={emailText}
-            onChange={(e) => esetText(e.target.value)}
-            placeholder="Your email"
+            value={formData.email}
+            onChange={e => handleChangeProfile('email', e.target.value)}
+            placeholder="Email"
           />
           <input
-            value={addressText}
-            onChange={(e) => asetText(e.target.value)}
+            value={formData.address}
+            onChange={e => handleChangeProfile('address', e.target.value)}
             placeholder="Address"
           />
         </div>
       </div>
 
-      <div className="tab-box">
+      <div className="portfolio-container">
         <div className="tab-buttons">
-          <button
-            className={activeTab === 'Education' ? 'active' : ''}
-            onClick={() => setActiveTab('Education')}
-          >
-            Education
-          </button>
-          <button
-            className={activeTab === '' ? 'Projects' : ''}
-            onClick={() => setActiveTab('Projects')}
-          >
-            Projects
-          </button>
-          <button
-            className={activeTab === 'Skills summary' ? 'active' : ''}
-            onClick={() => setActiveTab('Skills summary')}
-          >
-            Skills summary
-          </button>
-          <button
-            className={activeTab === 'Work experience' ? 'active' : ''}
-            onClick={() => setActiveTab('Work experience')}
-          >
-            Work experience
-          </button>
+          {['Education', 'Projects', 'Skills summary', 'Work experience'].map(tab => (
+            <button
+              key={tab}
+              className={activeTab === tab ? 'active' : ''}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
         </div>
 
         <div className="tab-content">
-          {activeTab === 'Education' && <div>content here</div>}
+          {activeTab === 'Education' && (
+            <div>
+              <div className="autocomplete-container">
+                <input
+                  type="text"
+                  value={inputText}
+                  onChange={handleChange}
+                  placeholder="Start typing university..."
+                  autoComplete="off"
+                />
+                {showDropdown && (
+                  <ul className="autocomplete-list">
+                    {filtered.map((opt, i) => (
+                      <li key={i} onClick={() => handleSelect(opt)}>
+                        {opt}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          )}
+
           {activeTab === 'Projects' && <div>content here</div>}
           {activeTab === 'Skills summary' && <div>content here</div>}
           {activeTab === 'Work experience' && <div>content here</div>}
