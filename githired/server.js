@@ -3,19 +3,20 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
 
-const ai = new GoogleGenerativeAI({
-  apiKey: "AIzaSyD7dT37z8-CGgqjydCo7M2HQa-jW3n90_g",
-});
+dotenv.config();
 
-const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const JOOBLE_API_KEY = process.env.JOOBLE_API_KEY;
+const PORT = 5000;
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 async function main() {
-  const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
+  const model = ai.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
   const result = await model.generateContent({
     contents: [
@@ -33,26 +34,6 @@ async function main() {
   const response = result.response;
   console.log(response.text());
 }
-
-app.get("/api/test-gemini", async (req, res) => {
-  try {
-    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
-
-    const result = await model.generateContent("Say hello from Gemini!");
-    const response = result.response;
-    const text = response.text();
-
-    console.log("Gemini response:", text);
-    res.json({ success: true, message: text });
-  } catch (error) {
-    console.error("Gemini test error:", error);
-    res.status(500).json({
-      success: false,
-      error: "Gemini integration failed",
-      details: error.message || error,
-    });
-  }
-});
 
 app.post("/api/jobs", (req, res) => {
   const postData = JSON.stringify({
@@ -96,7 +77,8 @@ app.post("/api/jobs", (req, res) => {
   apiReq.end();
 });
 
-const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Proxy server listening on http://localhost:${PORT}`);
 });
+
+main().catch(console.error);
