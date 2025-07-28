@@ -2,6 +2,19 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({
+  apiKey: "AIzaSyD7dT37z8-CGgqjydCo7M2HQa-jW3n90_g",
+});
+
+async function main() {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: "Explain how AI works in a few words",
+  });
+  console.log(response.text);
+}
 
 const app = express();
 app.use(cors());
