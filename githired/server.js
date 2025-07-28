@@ -2,25 +2,57 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const ai = new GoogleGenAI({
+const ai = new GoogleGenerativeAI({
   apiKey: "AIzaSyD7dT37z8-CGgqjydCo7M2HQa-jW3n90_g",
 });
 
-async function main() {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: "Explain how AI works in a few words",
-  });
-  console.log(response.text);
-}
+const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
+async function main() {
+  const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+  const result = await model.generateContent({
+    contents: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: "You are an AI chatbot for software development job-seeking interns. Provide job summaries based on search results.",
+          },
+        ],
+      },
+    ],
+  });
+
+  const response = result.response;
+  console.log(response.text());
+}
+
+app.get("/api/test-gemini", async (req, res) => {
+  try {
+    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+    const result = await model.generateContent("Say hello from Gemini!");
+    const response = result.response;
+    const text = response.text();
+
+    console.log("Gemini response:", text);
+    res.json({ success: true, message: text });
+  } catch (error) {
+    console.error("Gemini test error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Gemini integration failed",
+      details: error.message || error,
+    });
+  }
+});
 
 app.post("/api/jobs", (req, res) => {
   const postData = JSON.stringify({
