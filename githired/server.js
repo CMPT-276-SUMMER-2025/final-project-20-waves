@@ -1,20 +1,39 @@
-// ===== IMPORTS =====
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
-import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from "dotenv";
 
-// ===== CONFIG =====
 dotenv.config();
+
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const JOOBLE_API_KEY = process.env.JOOBLE_API_KEY;
+const PORT = 5000;
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.json());
 
-// ===== JOOBLE JOB SEARCH ENDPOINT =====
-const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
+async function main() {
+  const model = ai.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+
+  const result = await model.generateContent({
+    contents: [
+      {
+        role: "user",
+        parts: [
+          {
+            text: "You are an AI chatbot for software development job-seeking interns. Provide job summaries based on search results.",
+          },
+        ],
+      },
+    ],
+  });
+
+  const response = result.response;
+  console.log(response.text());
+}
 
 app.post("/api/jobs", (req, res) => {
   const postData = JSON.stringify({
@@ -41,8 +60,8 @@ app.post("/api/jobs", (req, res) => {
     apiRes.on("end", () => {
       try {
         const json = JSON.parse(data);
-        console.log("Jooble API response:", json);
-        res.json({ jobs: json.jobs || [] });
+        console.log("Jooble API response:", json); // check response
+        res.json({ jobs: json.jobs || [] }); // always send jobs array
       } catch (e) {
         res.status(500).json({ error: "Invalid JSON from Jooble" });
       }
@@ -58,40 +77,8 @@ app.post("/api/jobs", (req, res) => {
   apiReq.end();
 });
 
-// ===== GEMINI AUTOCOMPLETE ENDPOINT =====
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-app.post("/api/universities", async (req, res) => {
-  const { query } = req.body;
-
-  if (!query || query.length < 1) {
-    return res.json({ suggestions: [] });
-  }
-
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
-  const prompt = `
-Given the input "${query}", return a JSON array of up to 4 real university names that start with this input. 
-Output format: ["University A", "University B", ...]
-Only return the JSON array. Do not include any explanation or text before or after it.
-`;
-
-  try {
-    const result = await model.generateContent(prompt);
-    const text = await result.response.text();
-
-    const match = text.match(/\[[^\]]*\]/);
-    const suggestions = match ? JSON.parse(match[0]) : [];
-
-    res.json({ suggestions });
-  } catch (error) {
-    console.error("Gemini error:", error.message);
-    res.json({ suggestions: [] });
-  }
-});
-
-// ===== START SERVER =====
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Proxy server listening on http://localhost:${PORT}`);
 });
+
+main().catch(console.error);

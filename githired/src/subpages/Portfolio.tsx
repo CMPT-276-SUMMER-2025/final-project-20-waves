@@ -3,17 +3,14 @@ import "../css/portfolio.css";
 
 const Portfolio: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Education');
-
   const [formData, setFormData] = useState({
     name: '',
     birth: '',
     email: '',
     address: ''
   });
-
   const [image, setImage] = useState<string | null>(null);
 
-  // Load saved data from localStorage on mount
   useEffect(() => {
     setFormData({
       name: localStorage.getItem('name') || '',
@@ -24,7 +21,6 @@ const Portfolio: React.FC = () => {
     setImage(localStorage.getItem('profileImage'));
   }, []);
 
-  // Save each form field individually on change
   useEffect(() => {
     localStorage.setItem('name', formData.name);
   }, [formData.name]);
@@ -45,12 +41,11 @@ const Portfolio: React.FC = () => {
     if (image) localStorage.setItem('profileImage', image);
   }, [image]);
 
-  // Update formData state by field
+
   const handleChangeProfile = (field: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  // Handle image file input and convert to base64 string
   const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -60,63 +55,52 @@ const Portfolio: React.FC = () => {
     }
   };
 
-  // Autocomplete related states
   const [inputText, setInputText] = useState('');
-  const [filtered, setFiltered] = useState<string[]>([]);
+const [filtered, setFiltered] = useState<string[]>([]);
+
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Ref for debounce timeout
-  const timeoutRef = useRef<number | null>(null);
+const timeoutRef = useRef<number | null>(null);
 
-  // Fetch suggestions from backend API
+
+
   const fetchSuggestions = (query: string) => {
-    fetch('http://localhost:5000/api/universities', {
+    fetch('http://localhost:5000/api/vertex-ai-autocomplete', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ query }),
     })
-      .then(res => res.json())
-      .then(data => {
-        setFiltered(data.suggestions || []);
-        setShowDropdown(data.suggestions?.length > 0);
-      })
-      .catch(() => {
-        setFiltered([]);
-        setShowDropdown(false);
+      .then((res) => res.json())
+      .then((data) => {
+        setFiltered(data.suggestions);
+        setShowDropdown(data.suggestions.length > 0);
       });
+
   };
 
-  // Debounced input change handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputText(value);
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    timeoutRef.current = window.setTimeout(() => {
-      if (value.trim()) {
-        fetchSuggestions(value);
-      } else {
-        setFiltered([]);
-        setShowDropdown(false);
-      }
+    timeoutRef.current = setTimeout(() => {
+      fetchSuggestions(value);
     }, 300);
   };
 
-  // When user selects a suggestion
-  const handleSelect = (val: string) => {
+  const handleSelect = (val:string) => {
     setInputText(val);
     setFiltered([]);
     setShowDropdown(false);
   };
 
-  // Cleanup timeout on unmount
   useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
+  return () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  };
+}, []);
 
+  
   return (
     <div>
       <div className="profile-container">
@@ -140,64 +124,77 @@ const Portfolio: React.FC = () => {
           <input
             value={formData.name}
             onChange={e => handleChangeProfile('name', e.target.value)}
-            placeholder="Name"
           />
           <input
             value={formData.birth}
             onChange={e => handleChangeProfile('birth', e.target.value)}
-            placeholder="Birth"
           />
         </div>
         <div className="profile-input">
           <input
             value={formData.email}
             onChange={e => handleChangeProfile('email', e.target.value)}
-            placeholder="Email"
           />
           <input
-            value={formData.address}
+            value={formData.name}
             onChange={e => handleChangeProfile('address', e.target.value)}
-            placeholder="Address"
           />
         </div>
       </div>
 
       <div className="portfolio-container">
         <div className="tab-buttons">
-          {['Education', 'Projects', 'Skills summary', 'Work experience'].map(tab => (
-            <button
-              key={tab}
-              className={activeTab === tab ? 'active' : ''}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
+          <button
+            className={activeTab === 'Education' ? 'active' : ''}
+            onClick={() => setActiveTab('Education')}
+          >
+            Education
+          </button>
+          <button
+            className={activeTab === 'Projects' ? 'active' : ''}
+            onClick={() => setActiveTab('Projects')}
+          >
+            Projects
+          </button>
+          <button
+            className={activeTab === 'Skills summary' ? 'active' : ''}
+            onClick={() => setActiveTab('Skills summary')}
+          >
+            Skills summary
+          </button>
+          <button
+            className={activeTab === 'Work experience' ? 'active' : ''}
+            onClick={() => setActiveTab('Work experience')}
+          >
+            Work experience
+          </button>
         </div>
 
         <div className="tab-content">
-          {activeTab === 'Education' && (
-            <div>
-              <div className="autocomplete-container">
-                <input
-                  type="text"
-                  value={inputText}
-                  onChange={handleChange}
-                  placeholder="Start typing university..."
-                  autoComplete="off"
-                />
-                {showDropdown && (
-                  <ul className="autocomplete-list">
-                    {filtered.map((opt, i) => (
-                      <li key={i} onClick={() => handleSelect(opt)}>
-                        {opt}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          )}
+          {activeTab === 'Education' &&
+          <div>
+                <div className="autocomplete-container">
+      <input
+        type="text"
+        value={inputText}
+        onChange={handleChange}
+        placeholder="Start typing university..."
+      />
+      {showDropdown && (
+        <ul className="autocomplete-list">
+          {filtered.map((opt, i) => (
+            <li key={i} onClick={() => handleSelect(opt)}>
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+            
+          </div>}
+
+
+
 
           {activeTab === 'Projects' && <div>content here</div>}
           {activeTab === 'Skills summary' && <div>content here</div>}
