@@ -3,43 +3,26 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import dotenv from "dotenv";
 
-dotenv.config();
-
-const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const JOOBLE_API_KEY = process.env.JOOBLE_API_KEY;
+const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
+const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
 const PORT = 5000;
+
+const ai = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-async function main() {
-  const model = ai.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
-
-  const result = await model.generateContent({
-    contents: [
-      {
-        role: "user",
-        parts: [
-          {
-            text: "You are an AI chatbot for software development job-seeking interns. Provide job summaries based on search results.",
-          },
-        ],
-      },
-    ],
-  });
-
-  const response = result.response;
-  console.log(response.text());
-}
-
 app.post("/api/jobs", (req, res) => {
-  const postData = JSON.stringify({
-    keywords: req.body.keywords || "",
-    location: req.body.location || "Bern",
-  });
+  const { keywords = "", location = "Bern", salary, radius } = req.body;
+
+  const postDataObj = { keywords, location };
+
+  if (salary) postDataObj.salary = salary;
+  if (radius && radius !== "0") postDataObj.radius = radius;
+
+  const postData = JSON.stringify(postDataObj);
 
   const options = {
     hostname: "jooble.org",
@@ -60,25 +43,66 @@ app.post("/api/jobs", (req, res) => {
     apiRes.on("end", () => {
       try {
         const json = JSON.parse(data);
-        console.log("Jooble API response:", json); // check response
-        res.json({ jobs: json.jobs || [] }); // always send jobs array
+        if (!json.jobs) {
+          console.warn("No jobs returned by Jooble:", json);
+          return res
+            .status(502)
+            .json({ error: "No jobs returned by Jooble", raw: json });
+        }
+        res.json({ jobs: json.jobs });
       } catch (e) {
+        console.error("Invalid JSON from Jooble");
         res.status(500).json({ error: "Invalid JSON from Jooble" });
       }
     });
   });
 
   apiReq.on("error", (e) => {
-    console.error("Request error:", e);
-    res.status(500).json({ error: "Request to Jooble failed" });
+    console.error("Request error:", e.message);
+    res
+      .status(500)
+      .json({ error: "Request to Jooble failed", details: e.message });
   });
 
   apiReq.write(postData);
   apiReq.end();
 });
 
-app.listen(PORT, () => {
-  console.log(`Proxy server listening on http://localhost:${PORT}`);
+app.post("/api/summarize", async (req, res) => {
+  try {
+    const { jobs } = req.body;
+    if (!jobs || !Array.isArray(jobs)) {
+      return res.status(400).json({ error: "Invalid jobs array" });
+    }
+
+    const jobList = jobs
+      .map((j, i) => `${i + 1}. ${j.title} – ${j.location}`)
+      .join("\n");
+
+    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: `You are an AI assistant for job-seeking interns. Summarize the following job listings:\n\n${jobList}`,
+            },
+          ],
+        },
+      ],
+    });
+
+    res.json({ summary: result.response.text() });
+  } catch (err) {
+    console.error("Gemini error:", err);
+    res
+      .status(500)
+      .json({ error: "Failed to generate summary", details: err.message });
+  }
 });
 
-main().catch(console.error);
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
