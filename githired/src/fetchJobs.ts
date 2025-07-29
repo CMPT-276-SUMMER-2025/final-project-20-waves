@@ -4,8 +4,7 @@ export async function fetchJobs(
   salary?: string,
   radius?: string
 ) {
-  const apiKey = import.meta.env.VITE_JOOBLE_API_KEY;
-  const url = `https://jooble.org/api/${apiKey}`;
+  const url = `http://localhost:5000/api/jobs`;
 
   const requestBody: any = {
     keywords,
@@ -24,7 +23,7 @@ export async function fetchJobs(
   });
 
   if (!response.ok) {
-    throw new Error(`Jooble API request failed: ${response.status}`);
+    throw new Error(`Backend request failed: ${response.status}`);
   }
 
   const data = await response.json();
