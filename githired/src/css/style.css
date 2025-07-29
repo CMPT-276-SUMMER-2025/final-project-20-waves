@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -14,11 +16,11 @@
 }
 
 .nav-links a {
-  color: #e3d3d9;  
+  color: #ffffff;  
+  font-size: 20px;
   margin: 0 80px;
   text-decoration: none;
-  font-family: 'Arial', sans-serif;
-  font-weight: 600;
+  font-family: 'Bebas Neue', sans-serif;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
