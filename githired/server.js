@@ -1,11 +1,14 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import interviewQuestionsRouter from "./routes/interviewQuestions.js";
 
-app.use("/api", interviewQuestionsRouter);
+const app = express();
+
 
 const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
 const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
@@ -13,7 +16,6 @@ const PORT = 5000;
 
 const ai = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 

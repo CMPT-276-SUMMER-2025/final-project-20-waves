@@ -1,4 +1,4 @@
-// backend/routes/interviewQuestions.js
+
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -6,6 +6,8 @@ const router = express.Router();
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 router.post("/interview-questions", async (req, res) => {
+  console.log("🟢 Received POST /api/interview-questions with job:", req.body);
+
   const { job } = req.body;
 
   if (!job || !job.title) {
