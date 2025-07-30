@@ -1,23 +1,19 @@
 body {
   background-color: #c3a9b2;
   margin: 0; 
-  min-height: 100vh;
 }
 
 .background-rotator {
-  position: fixed;   
-  top: 0;
-  left: 0;
+  position: absolute;
   width: 100vw;    
-  height: 100vh;    
+  height: 400px;    
   overflow: hidden;
-  z-index: -1;   
+  z-index: 0;   
 }
 
 .bg-image {
   position: absolute;
-  width: 100%; 
-  height: 400px;
+  width: 100%;
   object-fit: cover; 
   opacity: 0;
   transition: opacity 2s ease-in-out;
@@ -29,16 +25,20 @@ body {
 }
 
 .home-container {
+  position: fixed;
+  top: 27%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 30px; 
 }
 
 .home-logo {
-  margin-top: 30px; 
-  height: 200px;
+  height: 100px;
   width: auto; 
 }
 
@@ -50,6 +50,7 @@ body {
   color: rgb(255, 255, 255);
   border-radius: 6px;
   font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
   transition: background 0.3s;
 }
 
@@ -58,14 +59,17 @@ body {
 }
 
 .card-slider-container {
-  position: relative;
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   overflow: hidden;
   width: 100%;
   height: 250px;
-  margin-top: 200px; 
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .card-slide {
@@ -78,8 +82,7 @@ body {
   opacity: 0;
   transform: translateX(-100%);
   transition: all 1s ease-in-out;
-  border-radius: 15px;       
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+  border-radius: 15px;      
 }
 
 .card-slide.active {
@@ -95,15 +98,24 @@ body {
 }
 
 .card-slide img {
-  width: 40%;
-  margin: 0 30px; 
-  width: 200px;
-  height: 200px; 
-  border-radius: 10px;       
+  margin-left: 100px; 
+  width: 150px;
+  height: 150px;     
 }
 
 .card-slide-content {
   display: flex;
   flex-direction: column; 
-  color: #ffffff
+  gap: 30px; 
+  margin: 0 100px;
+  color: #ffffff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+}
+
+
+.texture {
+  z-index: -1; 
+  height: 100vh;
+  width: 100vw;
 }

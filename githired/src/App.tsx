@@ -6,16 +6,24 @@ import Portfolio from './subpages/Portfolio';
 import Interview from './subpages/Interview';
 import Home from './subpages/Home';
 
-
 const NavBar: React.FC = () => {
   const location = useLocation();
 
   if (location.pathname === '/') {
     return (
-      <nav className="nav-links">
-        <Link to="/job-search">JobSearch</Link>
-        <Link to="/portfolio">Portfolio</Link>
-        <Link to="/interview">Interview</Link>
+      <nav className="nav-container">
+        <div className="nav-elements">
+          <img src="/images/search.png" alt="Logo" className="nav-img" />
+          <Link to="/job-search">JobSearch</Link>
+        </div>
+        <div className="nav-elements">
+          <img src="/images/folder.png" alt="Logo" className="nav-img" />
+          <Link to="/portfolio">Portfolio</Link>
+        </div>
+        <div className="nav-elements">
+          <img src="/images/interview.png" alt="Logo" className="nav-img" />
+          <Link to="/interview">Interview</Link>
+        </div>
       </nav>
     );
   } else {
