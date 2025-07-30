@@ -56,7 +56,7 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
       setQuestions(null);
     
       try {
-        const res = await fetch("http://localhost:5000/api/interview-questions". {
+        const res = await fetch("http://localhost:5000/api/interview-questions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ job }),
@@ -109,6 +109,26 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
 
         {!loading && !aiSummary && <p>{cleanSnippet}</p>}
 
+        {/* Interview Questions Section */}
+        <div style={{ marginTop: "1em" }}>
+          <h3>Interview Questions</h3>
+
+          {questionsLoading && <p>Loading interview questions...</p>}
+
+          {questionsError && (
+            <p style={{ color: "red" }}>{questionsError}</p>
+          )}
+
+          {questions && questions.length > 0 ? (
+            <ul>
+              {questions.map((q, i) => (
+                <li key={i}>{q}</li>
+              ))}
+            </ul>
+          ) : (
+            !questionsLoading && <p>No interview questions available.</p>
+          )}
+        </div>
         <a
           href={job.link}
           target="_blank"
