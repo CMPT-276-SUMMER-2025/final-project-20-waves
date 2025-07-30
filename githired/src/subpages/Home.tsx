@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import "./Home.css"
-import { Link } from 'react-router-dom';
-=======
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import "../css/Home.css";
@@ -34,7 +29,6 @@ const cardsData = [
   },
 ];
 
->>>>>>> f6a190458c8a1bfda9b3374da7738b2e348f0ce1
 const Home: React.FC = () => {
   const [bgIndex, setBgIndex] = useState(0);
 
