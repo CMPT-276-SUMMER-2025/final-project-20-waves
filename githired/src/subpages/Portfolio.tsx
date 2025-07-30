@@ -6,11 +6,50 @@ type EducationEntry = {
   major: string;
 };
 
+type ProjectEntry = {
+  projectName: string;
+  role: string;
+  codeLanguage: string;
+};
+
+type ExperienceEntry = {
+  jobTitle: string;
+  companyName: string;
+  companyAddress: string;
+  dateStart: string;
+  dateEnd: string;
+  workType: "Contract" | "Full-Time";
+};
+
+const codeLanguages = [
+  "JavaScript",,
+  "Python",
+  "C/C++",
+  "Go",
+  "Ruby",
+  "Other"
+];
+
+const role = [
+  "Full Stack Developer",,
+  "Frontend developer",
+  "Backend Developer",
+  "UX designer",
+  "DevOps Engineer",
+];
+
+const MAX_PROJECT_BLOCKS = 4;
 const MAX_EDUCATION_BLOCKS = 4;
-const STORAGE_KEY = "educationData";
+const MAX_EXPERIENCE_BLOCKS = 4;
+
+const EDU_STORAGE_KEY = "educationData";
+const PROJECT_STORAGE_KEY = "projectsData";
+const EXPERIENCE_STORAGE_KEY = "experienceData";
+
 
 const Portfolio: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Education');
+
   const [formData, setFormData] = useState({
     name: '',
     birth: '',
@@ -53,10 +92,15 @@ const Portfolio: React.FC = () => {
     }
   };
 
-const [education, setEducation] = useState<EducationEntry[]>([
+
+  {/* Education section */}
+
+  //initializes the education state as an array with one object
+  const [education, setEducation] = useState<EducationEntry[]>([ 
     { university: "", major: "" },
   ]);
 
+  //allows the user to edit a specific field at a specific index.
   const handleChange = (
     index: number,
     field: keyof EducationEntry,
@@ -73,16 +117,117 @@ const [education, setEducation] = useState<EducationEntry[]>([
     }
   };
 
+  const deleteEducationBlock = (index: number) => {
+    const updated = education.filter((_, i) => i !== index);
+    setEducation(updated);
+  };
+
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(EDU_STORAGE_KEY);
     if (saved) {
       setEducation(JSON.parse(saved));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(education));
+    localStorage.setItem(EDU_STORAGE_KEY, JSON.stringify(education));
   }, [education]);
+
+
+  {/* Project section */}
+
+  const [projects, setProjects] = useState<ProjectEntry[]>([
+    { projectName: "", role: "", codeLanguage: "" }
+  ]);
+
+  const handleProjectChange = (
+    index: number,
+    field: keyof ProjectEntry,
+    value: string
+  ) => {
+    const updated = [...projects];
+    updated[index][field] = value;
+    setProjects(updated);
+  };
+
+  const addProjectBlock = () => {
+    if (projects.length < MAX_PROJECT_BLOCKS) {
+      setProjects([...projects, { projectName: "", role: "", codeLanguage: "" }]);
+    }
+  };
+
+  const deleteProjectBlock = (index: number) => {
+    const updated = projects.filter((_, i) => i !== index);
+    setProjects(updated);
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem(PROJECT_STORAGE_KEY);
+    if (saved) {
+      setProjects(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(projects));
+  }, [projects]);
+
+
+  {/* Experience section */}
+
+  const [experience, setExperience] = useState<ExperienceEntry[]>([
+    {
+      jobTitle: "",
+      companyName: "",
+      companyAddress: "",
+      dateStart: "",
+      dateEnd: "",
+      workType: "Full-Time",
+    },
+  ]);
+    
+  const handleExperienceChange = <K extends keyof ExperienceEntry>(
+    index: number,
+    field: K,
+    value: ExperienceEntry[K]
+  ) => {
+    const updated = [...experience];
+    updated[index][field] = value;
+    setExperience(updated);
+  };
+
+
+  const addExperienceBlock = () => {
+    if (experience.length < MAX_EXPERIENCE_BLOCKS) {
+      setExperience([
+        ...experience,
+        {
+          jobTitle: "",
+          companyName: "",
+          companyAddress: "",
+          dateStart: "",
+          dateEnd: "",
+          workType: "Full-Time",
+        },
+      ]);
+    }
+  };
+
+  const deleteExperienceBlock = (index: number) => {
+    const updated = experience.filter((_, i) => i !== index);
+    setExperience(updated);
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem(EXPERIENCE_STORAGE_KEY);
+    if (saved) {
+      setExperience(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(EXPERIENCE_STORAGE_KEY, JSON.stringify(experience));
+  }, [experience]);
 
   
   return (
@@ -105,29 +250,29 @@ const [education, setEducation] = useState<EducationEntry[]>([
         </div>
 
        <div className="profile-input">
-  <input
-    value={formData.name}
-    onChange={e => handleChangeProfile('name', e.target.value)}
-    placeholder="Name"
-  />
-  <input
-    value={formData.birth}
-    onChange={e => handleChangeProfile('birth', e.target.value)}
-    placeholder="Birthdate"
-  />
-</div>
-<div className="profile-input">
-  <input
-    value={formData.email}
-    onChange={e => handleChangeProfile('email', e.target.value)}
-    placeholder="Email"
-  />
-  <input
-    value={formData.address}
-    onChange={e => handleChangeProfile('address', e.target.value)}
-    placeholder="Address"
-  />
-</div>
+        <input
+          value={formData.name}
+          onChange={e => handleChangeProfile('name', e.target.value)}
+          placeholder="Name"
+        />
+        <input
+          value={formData.birth}
+          onChange={e => handleChangeProfile('birth', e.target.value)}
+          placeholder="Birthdate"
+        />
+       </div>
+       <div className="profile-input">
+          <input
+            value={formData.email}
+            onChange={e => handleChangeProfile('email', e.target.value)}
+            placeholder="Email"
+          />
+          <input
+            value={formData.address}
+            onChange={e => handleChangeProfile('address', e.target.value)}
+            placeholder="Address"
+          />
+       </div>
       </div>
 
       <div className="portfolio-container">
@@ -145,12 +290,6 @@ const [education, setEducation] = useState<EducationEntry[]>([
             Projects
           </button>
           <button
-            className={activeTab === 'Skills summary' ? 'active' : ''}
-            onClick={() => setActiveTab('Skills summary')}
-          >
-            Skills summary
-          </button>
-          <button
             className={activeTab === 'Work experience' ? 'active' : ''}
             onClick={() => setActiveTab('Work experience')}
           >
@@ -162,35 +301,137 @@ const [education, setEducation] = useState<EducationEntry[]>([
           {activeTab === 'Education' &&
           <div>
              <div>
-      <h2>Education</h2>
-      {education.map((edu, index) => (
-        <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
-          <input
-            type="text"
-            placeholder="University Name"
-            value={edu.university}
-            onChange={(e) => handleChange(index, "university", e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Major"
-            value={edu.major}
-            onChange={(e) => handleChange(index, "major", e.target.value)}
-            style={{ marginLeft: "10px" }}
-          />
-        </div>
-      ))}
+                <h2>Education</h2>
+                {education.map((edu, index) => (
+                  <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+                    <input
+                      type="text"
+                      placeholder="University Name"
+                      value={edu.university}
+                      onChange={(e) => handleChange(index, "university", e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Major"
+                      value={edu.major}
+                      onChange={(e) => handleChange(index, "major", e.target.value)}
+                      style={{ marginLeft: "10px" }}
+                    />
+                    <button onClick={() => deleteEducationBlock(index)} style={{marginLeft: "auto"}}>
+                      Delete
+                    </button>
+                  </div>
+                ))}
 
-      {education.length < MAX_EDUCATION_BLOCKS && (
-        <button onClick={addEducationBlock}>+ Add Education</button>
-      )}
-    </div>
+                {education.length < MAX_EDUCATION_BLOCKS && (
+                  <button onClick={addEducationBlock}>+ Add Education</button>
+                )}
+                
+             </div>
           </div>}
 
-          {activeTab === 'Projects' && <div>content here</div>}
-          {activeTab === 'Skills summary' && <div>content here</div>}
-          {activeTab === 'Work experience' && <div>content here</div>}
+          {activeTab === 'Projects' && 
+          <div>
+            <div>
+              <h2>Projects</h2>
+
+              {projects.map((proj, index) => (
+                <div key={index}>
+                  <input
+                    type="text"
+                    placeholder="Project Name"
+                    value={proj.projectName}
+                    onChange={(e) => handleProjectChange(index, "projectName", e.target.value)}
+                  />
+                  <select
+                    value={proj.codeLanguage}
+                    onChange={(e) => handleProjectChange(index, "role", e.target.value)}
+                  >
+                    <option value="">Role</option>
+                    {codeLanguages.map((lang) => (
+                      <option key={lang} value={lang}>{lang}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={proj.codeLanguage}
+                    onChange={(e) => handleProjectChange(index, "codeLanguage", e.target.value)}
+                  >
+                    <option value="">Languages</option>
+                    {codeLanguages.map((lang) => (
+                      <option key={lang} value={lang}>{lang}</option>
+                    ))}
+                  </select>
+                  <button onClick={() => deleteProjectBlock(index)} style={{marginLeft: "auto"}}>
+                    Delete
+                  </button>
+                </div>
+              ))}
+
+              {projects.length < MAX_PROJECT_BLOCKS && (
+                <button onClick={addProjectBlock}>+ Add Project</button>
+              )}
+            </div>
+          </div>}
+
+          {activeTab === 'Work experience' && 
+          <div>
+             <div>
+                <h2>Experience</h2>
+                {experience.map((exp, index) => (
+                  <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+                    <input
+                      type="text"
+                      placeholder="Job title"
+                      value={exp.jobTitle}
+                      onChange={(e) => handleExperienceChange(index, "jobTitle", e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="company name"
+                      value={exp.companyName}
+                      onChange={(e) => handleExperienceChange(index, "companyName", e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="address"
+                      value={exp.companyAddress}
+                      onChange={(e) => handleExperienceChange(index, "companyAddress", e.target.value)}
+                    />
+                    <select
+                      value={exp.workType}
+                      onChange={(e) =>
+                        handleExperienceChange(index, "workType", e.target.value as "Full-Time" | "Contract")
+                      }
+                    >
+                      <option value="Full-Time">Full-Time</option>
+                      <option value="Contract">Contract</option>
+                    </select>
+                    <input
+                      type="text"
+                      placeholder="MM/DD/YYYY"
+                      value={exp.dateStart}
+                      onChange={(e) => handleExperienceChange(index, "dateStart", e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      placeholder="MM/DD/YYYY"
+                      value={exp.dateEnd}
+                      onChange={(e) => handleExperienceChange(index, "dateEnd", e.target.value)}
+                    />
+
+                    <button onClick={() => deleteExperienceBlock(index)} style={{marginLeft: "auto"}}>
+                      Delete
+                    </button>
+                  </div>
+                ))}
+
+                {education.length < MAX_EXPERIENCE_BLOCKS && (
+                  <button onClick={addExperienceBlock}>+ Add</button>
+                )}
+             </div>
+          </div>}
         </div>
+   
       </div>
     </div>
   );
