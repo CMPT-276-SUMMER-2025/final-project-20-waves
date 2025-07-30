@@ -32,7 +32,6 @@ Please avoid technical/coding questions.
 
     const text = result.response.text();
 
-    // Parse questions assuming they are separated by new lines
     const questions = text
       .split("\n")
       .map(q => q.trim())
