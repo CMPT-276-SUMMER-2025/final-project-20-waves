@@ -11,23 +11,24 @@ const images = [
 const cardsData = [
   {
     id: 1,
-    image: "https://via.placeholder.com/150/FF0000/FFFFFF?text=Card+1",
+    image: "/images/search.png",
     title: "Job Search",
-    description: "This is the second card description.",
+    description: "Search target jobs that suit your specific skills, experience, and education. We make the job search process more efficient, relevant, and personalized.",
   },
   {
     id: 2,
-    image: "https://via.placeholder.com/150/00FF00/FFFFFF?text=Card+2",
+    image: "/images/folder.png",
     title: "Portfolio",
-    description: "This is the second card description.",
+    description: "Showcase your personal and professional projects in one place. It typically includes: A collection of past work, such as coding projects, designs, or writing samples. Descriptions of each project, including tools used, challenges faced, and outcomes. Education history and skills proficiency.",
   },
   {
     id: 3,
-    image: "https://via.placeholder.com/150/0000FF/FFFFFF?text=Card+3",
+    image: "/images/interview.png",
     title: "Interview",
-    description: "This is the third card description.",
-  },
+    description: "Generate possible behavior or situational interview questions based on the job description and relevant details that you can provide. We help users to prepare for their interviews by simulating questions tailored to the specific role and taking into account other bits of information. ",
+  }
 ];
+
 
 const Home: React.FC = () => {
   const [bgIndex, setBgIndex] = useState(0);
@@ -55,46 +56,49 @@ const Home: React.FC = () => {
   return (
     <div>
       {/* Background Images */}
-      <div className="background-rotator">
-        {images.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            className={`bg-image ${index === bgIndex ? 'visible' : ''}`}
-            alt={`background-${index}`}
-          />
-        ))}
-      </div>
-
-      {/* Main Content */}
-      <div className="home-container">
-        <img src="/images/Logo.png" alt="Logo" className="home-logo" />
-        <div>
-          <Link to="/login" className="home-btn">Login</Link>
-          <Link to="/signup" className="home-btn">Sign Up</Link>
-        </div>
-      </div>
-
-      {/* Card Slider */}
-      <div className="card-slider-container">
-        {cardsData.map((card, index) => (
-          <div
-            key={card.id}
-            className={`card-slide ${
-              index === currentIndex ? "active" : index === prevIndex ? "exit" : ""
-            }`}
-          >
+        <div className="background-rotator">
+            {images.map((img, index) => (
             <img
-              src={card.image}
-              alt={card.title}
+                key={index}
+                src={img}
+                className={`bg-image ${index === bgIndex ? 'visible' : ''}`}
+                alt={`background-${index}`}
             />
-            <div className="card-slide-content">
-                <h2>{card.title}</h2>
-                <p>{card.description}</p>
+            ))}
+        </div>
+
+        {/* Main Content */}
+        <div className="home-container">
+            <img src="/images/Logo.png" alt="Logo" className="home-logo" />
+            <div>
+            <Link to="/login" className="home-btn">Login</Link>
+            <Link to="/signup" className="home-btn">Sign Up</Link>
             </div>
-          </div>
-        ))}
-      </div>
+        </div>
+
+        <img src="/images/texture.png" alt="background texture" className="texture" />
+     
+            {/* Card Slider */}
+            <div className="card-slider-container">
+                {cardsData.map((card, index) => (
+                <div
+                    key={card.id}
+                    className={`card-slide ${
+                    index === currentIndex ? "active" : index === prevIndex ? "exit" : ""
+                    }`}
+                >
+                    <img
+                    src={card.image}
+                    alt={card.title}
+                    />
+                    <div className="card-slide-content">
+                        <h2>{card.title}</h2>
+                        <p>{card.description}</p>
+                    </div>
+                </div>
+                ))}
+            </div>
+
     </div>
   );
 };

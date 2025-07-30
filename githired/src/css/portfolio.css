@@ -1,5 +1,4 @@
 .profile-container {
-  position: absolute;
   display: flex;
   align-items: center;
   gap: 80px;
@@ -37,7 +36,6 @@
 }
 
 .portfolio-container {
-  position: relative; 
   margin-top: 50px; 
   display:flex; 
 }
@@ -73,6 +71,13 @@
   background: white;
 }
 
+.wrapper {
+    display: flex;
+  flex-direction: column; 
+  gap: 100px;
 
+  align-items: center;
+  justify-content: center;
+}
 
 

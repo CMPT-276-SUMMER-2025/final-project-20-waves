@@ -6,27 +6,34 @@
   box-sizing: border-box;
 }
 
-.nav-links {
+.nav-container {
   background-color: #785964;  
   display: flex;
   align-items: center;    
   justify-content: center; 
   width: 100%;
   height: 60px;
+  gap: 100px;
 }
 
-.nav-links a {
+.nav-elements a {
   color: #ffffff;  
-  font-size: 20px;
-  margin: 0 80px;
+  font-size: 1.5rem;
   text-decoration: none;
   font-family: 'Bebas Neue', sans-serif;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.nav-links a:hover {
+.nav-elements a:hover {
   color: #c3a9b2;  
 }
+
+.nav-img {
+  width: 20px;
+  height: 20px; 
+  margin-right: 10px;
+}
+
 
 
 

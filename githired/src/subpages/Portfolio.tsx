@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "../css/portfolio.css";
 
+type EducationEntry = {
+  university: string;
+  major: string;
+};
+
+const MAX_EDUCATION_BLOCKS = 4;
+const STORAGE_KEY = "educationData";
+
 const Portfolio: React.FC = () => {
   const [activeTab, setActiveTab] = useState('Education');
   const [formData, setFormData] = useState({
@@ -9,6 +17,7 @@ const Portfolio: React.FC = () => {
     email: '',
     address: ''
   });
+
   const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,25 +31,14 @@ const Portfolio: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('name', formData.name);
-  }, [formData.name]);
-
-  useEffect(() => {
-    localStorage.setItem('birth', formData.birth);
-  }, [formData.birth]);
-
-  useEffect(() => {
-    localStorage.setItem('email', formData.email);
-  }, [formData.email]);
-
-  useEffect(() => {
-    localStorage.setItem('address', formData.address);
-  }, [formData.address]);
+    Object.entries(formData).forEach(([key, value]) => {
+      localStorage.setItem(key, value);
+    });
+  }, [formData]);
 
   useEffect(() => {
     if (image) localStorage.setItem('profileImage', image);
   }, [image]);
-
 
   const handleChangeProfile = (field: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -55,54 +53,40 @@ const Portfolio: React.FC = () => {
     }
   };
 
-  const [inputText, setInputText] = useState('');
-const [filtered, setFiltered] = useState<string[]>([]);
+const [education, setEducation] = useState<EducationEntry[]>([
+    { university: "", major: "" },
+  ]);
 
-  const [showDropdown, setShowDropdown] = useState(false);
-
-const timeoutRef = useRef<number | null>(null);
-
-
-
-  const fetchSuggestions = (query: string) => {
-    fetch('http://localhost:5000/api/vertex-ai-autocomplete', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ query }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setFiltered(data.suggestions);
-        setShowDropdown(data.suggestions.length > 0);
-      });
-
+  const handleChange = (
+    index: number,
+    field: keyof EducationEntry,
+    value: string
+  ) => {
+    const updated = [...education];
+    updated[index][field] = value;
+    setEducation(updated);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputText(value);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-    timeoutRef.current = setTimeout(() => {
-      fetchSuggestions(value);
-    }, 300);
-  };
-
-  const handleSelect = (val:string) => {
-    setInputText(val);
-    setFiltered([]);
-    setShowDropdown(false);
+  const addEducationBlock = () => {
+    if (education.length < MAX_EDUCATION_BLOCKS) {
+      setEducation([...education, { university: "", major: "" }]);
+    }
   };
 
   useEffect(() => {
-  return () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-  };
-}, []);
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      setEducation(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(education));
+  }, [education]);
 
   
   return (
-    <div>
+    <div className="wrapper">
       <div className="profile-container">
         <div>
           <img
@@ -120,26 +104,30 @@ const timeoutRef = useRef<number | null>(null);
           />
         </div>
 
-        <div className="profile-input">
-          <input
-            value={formData.name}
-            onChange={e => handleChangeProfile('name', e.target.value)}
-          />
-          <input
-            value={formData.birth}
-            onChange={e => handleChangeProfile('birth', e.target.value)}
-          />
-        </div>
-        <div className="profile-input">
-          <input
-            value={formData.email}
-            onChange={e => handleChangeProfile('email', e.target.value)}
-          />
-          <input
-            value={formData.name}
-            onChange={e => handleChangeProfile('address', e.target.value)}
-          />
-        </div>
+       <div className="profile-input">
+  <input
+    value={formData.name}
+    onChange={e => handleChangeProfile('name', e.target.value)}
+    placeholder="Name"
+  />
+  <input
+    value={formData.birth}
+    onChange={e => handleChangeProfile('birth', e.target.value)}
+    placeholder="Birthdate"
+  />
+</div>
+<div className="profile-input">
+  <input
+    value={formData.email}
+    onChange={e => handleChangeProfile('email', e.target.value)}
+    placeholder="Email"
+  />
+  <input
+    value={formData.address}
+    onChange={e => handleChangeProfile('address', e.target.value)}
+    placeholder="Address"
+  />
+</div>
       </div>
 
       <div className="portfolio-container">
@@ -173,28 +161,31 @@ const timeoutRef = useRef<number | null>(null);
         <div className="tab-content">
           {activeTab === 'Education' &&
           <div>
-                <div className="autocomplete-container">
-      <input
-        type="text"
-        value={inputText}
-        onChange={handleChange}
-        placeholder="Start typing university..."
-      />
-      {showDropdown && (
-        <ul className="autocomplete-list">
-          {filtered.map((opt, i) => (
-            <li key={i} onClick={() => handleSelect(opt)}>
-              {opt}
-            </li>
-          ))}
-        </ul>
+             <div>
+      <h2>Education</h2>
+      {education.map((edu, index) => (
+        <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+          <input
+            type="text"
+            placeholder="University Name"
+            value={edu.university}
+            onChange={(e) => handleChange(index, "university", e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Major"
+            value={edu.major}
+            onChange={(e) => handleChange(index, "major", e.target.value)}
+            style={{ marginLeft: "10px" }}
+          />
+        </div>
+      ))}
+
+      {education.length < MAX_EDUCATION_BLOCKS && (
+        <button onClick={addEducationBlock}>+ Add Education</button>
       )}
     </div>
-            
           </div>}
-
-
-
 
           {activeTab === 'Projects' && <div>content here</div>}
           {activeTab === 'Skills summary' && <div>content here</div>}
