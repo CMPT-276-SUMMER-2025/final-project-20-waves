@@ -16,11 +16,11 @@ const sampleJob = {
 };
 
 const JobSearch = () => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<any[]>([]);
   const [selectedJob, setSelectedJob] = useState(null);
 
   // This function receives the clicked job and sets it as selected
-  const handleCardClick = (job) => {
+  const handleCardClick = (job: any) => {
     setSelectedJob(job);
   };
 
