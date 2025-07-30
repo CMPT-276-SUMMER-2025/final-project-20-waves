@@ -7,6 +7,7 @@ interface Job {
   company: string;
   snippet?: string;
   link: string;
+  salary?: string;
 }
 
 interface JobInfoProps {
@@ -98,6 +99,8 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
         </button>
         <h1>{job.title}</h1>
         <h2>{job.company}</h2>
+        {job.salary && <p><strong>Salary:</strong> {job.salary}</p>}
+
 
         {loading && <p>Loading AI summary...</p>}
 
