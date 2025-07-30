@@ -7,6 +7,7 @@ interface Job {
   company: string;
   snippet?: string;
   link: string;
+  salary?: string;
 }
 
 interface JobInfoProps {
@@ -18,10 +19,16 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const [questions, setQuestions] = useState<string[] | null>(null);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
+  const [questionsError, setQuestionsError] = useState<string | null>(null);
+
   useEffect(() => {
     async function fetchSummary() {
       setLoading(true);
       setAiSummary(null); // reset previous summary
+
+
 
       try {
         const response = await fetch("http://localhost:5000/api/summarize", {
@@ -44,7 +51,39 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
       }
     }
 
+    async function fetchInterviewQuestions(){
+      setQuestionsLoading(true);
+      setQuestionsError(null);
+      setQuestions(null);
+    
+      try {
+        const res = await fetch("http://localhost:5000/api/interview-questions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ job }),
+
+        });
+
+        if (!res.ok) {
+          throw new Error(`API error: ${res.status}`);
+        }
+
+        const data = await res.json();
+        setQuestions(data.questions);
+
+      } catch (err) {
+        console.error("Error fetching interview questions:", err);
+        setQuestionsError("Failed to load interview questions.");
+      } finally {
+        setQuestionsLoading(false);
+      }
+      
+    }
+
+
     fetchSummary();
+    fetchInterviewQuestions();
+
   }, [job]);
 
   const cleanSnippet = job.snippet
@@ -60,6 +99,8 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
         </button>
         <h1>{job.title}</h1>
         <h2>{job.company}</h2>
+        {job.salary && <p><strong>Salary:</strong> {job.salary}</p>}
+
 
         {loading && <p>Loading AI summary...</p>}
 
@@ -71,6 +112,26 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
 
         {!loading && !aiSummary && <p>{cleanSnippet}</p>}
 
+        {/* Interview Questions Section */}
+        <div style={{ marginTop: "1em" }}>
+          <h3>Interview Questions</h3>
+
+          {questionsLoading && <p>Loading interview questions...</p>}
+
+          {questionsError && (
+            <p style={{ color: "red" }}>{questionsError}</p>
+          )}
+
+          {questions && questions.length > 0 ? (
+            <ul>
+              {questions.map((q, i) => (
+                <li key={i}>{q}</li>
+              ))}
+            </ul>
+          ) : (
+            !questionsLoading && <p>No interview questions available.</p>
+          )}
+        </div>
         <a
           href={job.link}
           target="_blank"

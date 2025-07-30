@@ -4,8 +4,9 @@
   border-radius: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   background-color: #fee2e2; /* bg-red-100 */
-  color: #ef4444; /* text-red-500 */
+  color: black; /* text-red-500 */
   margin-bottom: 1rem;
+  
 }
 
 .job-left{

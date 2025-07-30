@@ -3,6 +3,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import interviewQuestionsRouter from "./routes/interviewQuestions.js";
+
+app.use("/api", interviewQuestionsRouter);
 
 const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
 const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
@@ -102,6 +105,43 @@ app.post("/api/summarize", async (req, res) => {
       .json({ error: "Failed to generate summary", details: err.message });
   }
 });
+app.post("/api/interview-questions", async (req, res) => {
+  try {
+    const { job } = req.body;
+    if (!job || !job.title) {
+      return res.status(400).json({ error: "Invalid job data" });
+    }
+
+    const prompt = `
+      Generate 5 basic behavioral and situational interview questions based on this job:
+      Title: ${job.title}
+      Description: ${job.snippet || "No description provided."}
+      Please avoid technical or coding questions.
+    `;
+
+    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
+    });
+
+    const text = result.response.text();
+
+    // Assume questions are separated by new lines, split and filter empty lines
+    const questions = text.split("\n").map(q => q.trim()).filter(q => q.length > 0);
+
+    res.json({ questions });
+  } catch (err) {
+    console.error("Gemini error:", err);
+    res.status(500).json({ error: "Failed to generate interview questions", details: err.message });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
