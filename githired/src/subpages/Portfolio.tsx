@@ -236,7 +236,7 @@ const Portfolio: React.FC = () => {
         <div>
           <img
             className="profile-img"
-            src={image || '/default-profile.png'}
+            src={image || '/images/profile.png'}
             alt="Profile"
             onClick={() => document.getElementById('fileInput')?.click()}
           />
@@ -301,9 +301,8 @@ const Portfolio: React.FC = () => {
           {activeTab === 'Education' &&
           <div>
              <div>
-                <h2>Education</h2>
                 {education.map((edu, index) => (
-                  <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+                  <div key={index} className="inputBox">
                     <input
                       type="text"
                       placeholder="University Name"
@@ -333,10 +332,8 @@ const Portfolio: React.FC = () => {
           {activeTab === 'Projects' && 
           <div>
             <div>
-              <h2>Projects</h2>
-
               {projects.map((proj, index) => (
-                <div key={index}>
+                <div key={index} className="inputBox">
                   <input
                     type="text"
                     placeholder="Project Name"
@@ -376,9 +373,8 @@ const Portfolio: React.FC = () => {
           {activeTab === 'Work experience' && 
           <div>
              <div>
-                <h2>Experience</h2>
                 {experience.map((exp, index) => (
-                  <div key={index} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+                  <div key={index} className="inputBox">
                     <input
                       type="text"
                       placeholder="Job title"
@@ -437,5 +433,4 @@ const Portfolio: React.FC = () => {
   );
 };
 
-//portfolio page
 export default Portfolio;

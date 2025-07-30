@@ -28,12 +28,12 @@ const NavBar: React.FC = () => {
     );
   } else {
     return (
-      <nav className="nav-links">
+      <nav className="nav-container">
         <Link to="/">
           <img
             src="images/Logo.png"
             alt="Home"
-            style={{ height: '100px' }}
+            style={{ height: '50px' }}
           />
         </Link>
       </nav>
