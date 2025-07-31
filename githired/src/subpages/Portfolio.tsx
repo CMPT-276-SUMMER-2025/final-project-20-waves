@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "../css/portfolio.css";
+import PageWrapper from '../PageWrapper';
 
 type EducationEntry = {
   university: string;
@@ -40,7 +41,7 @@ const role = [
 
 const MAX_PROJECT_BLOCKS = 4;
 const MAX_EDUCATION_BLOCKS = 4;
-const MAX_EXPERIENCE_BLOCKS = 4;
+const MAX_EXPERIENCE_BLOCKS = 3;
 
 const EDU_STORAGE_KEY = "educationData";
 const PROJECT_STORAGE_KEY = "projectsData";
@@ -231,6 +232,7 @@ const Portfolio: React.FC = () => {
 
   
   return (
+    <PageWrapper>
     <div className="wrapper">
       <div className="profile-container">
         <div>
@@ -314,16 +316,15 @@ const Portfolio: React.FC = () => {
                       placeholder="Major"
                       value={edu.major}
                       onChange={(e) => handleChange(index, "major", e.target.value)}
-                      style={{ marginLeft: "10px" }}
                     />
-                    <button onClick={() => deleteEducationBlock(index)} style={{marginLeft: "auto"}}>
+                    <button onClick={() => deleteEducationBlock(index)} className="deleteButton">
                       Delete
                     </button>
                   </div>
                 ))}
 
                 {education.length < MAX_EDUCATION_BLOCKS && (
-                  <button onClick={addEducationBlock}>+ Add Education</button>
+                  <button onClick={addEducationBlock} className="addButton">+ Add</button>
                 )}
                 
              </div>
@@ -358,14 +359,14 @@ const Portfolio: React.FC = () => {
                       <option key={lang} value={lang}>{lang}</option>
                     ))}
                   </select>
-                  <button onClick={() => deleteProjectBlock(index)} style={{marginLeft: "auto"}}>
+                  <button onClick={() => deleteProjectBlock(index)} className="deleteButton">
                     Delete
                   </button>
                 </div>
               ))}
 
               {projects.length < MAX_PROJECT_BLOCKS && (
-                <button onClick={addProjectBlock}>+ Add Project</button>
+                <button onClick={addProjectBlock} className="addButton">+ Add</button>
               )}
             </div>
           </div>}
@@ -374,55 +375,59 @@ const Portfolio: React.FC = () => {
           <div>
              <div>
                 {experience.map((exp, index) => (
-                  <div key={index} className="inputBox">
-                    <input
-                      type="text"
-                      placeholder="Job title"
-                      value={exp.jobTitle}
-                      onChange={(e) => handleExperienceChange(index, "jobTitle", e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      placeholder="company name"
-                      value={exp.companyName}
-                      onChange={(e) => handleExperienceChange(index, "companyName", e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      placeholder="address"
-                      value={exp.companyAddress}
-                      onChange={(e) => handleExperienceChange(index, "companyAddress", e.target.value)}
-                    />
-                    <select
-                      value={exp.workType}
-                      onChange={(e) =>
-                        handleExperienceChange(index, "workType", e.target.value as "Full-Time" | "Contract")
-                      }
-                    >
-                      <option value="Full-Time">Full-Time</option>
-                      <option value="Contract">Contract</option>
-                    </select>
-                    <input
-                      type="text"
-                      placeholder="MM/DD/YYYY"
-                      value={exp.dateStart}
-                      onChange={(e) => handleExperienceChange(index, "dateStart", e.target.value)}
-                    />
-                    <input
-                      type="text"
-                      placeholder="MM/DD/YYYY"
-                      value={exp.dateEnd}
-                      onChange={(e) => handleExperienceChange(index, "dateEnd", e.target.value)}
-                    />
+                  <div key={index} className="expInputBox">
+                    <div style={{ display: "flex", alignItems: "center", gap: "50px" }}>
+                      <input 
+                        type="text"
+                        placeholder="Job title"
+                        value={exp.jobTitle}
+                        onChange={(e) => handleExperienceChange(index, "jobTitle", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="company name"
+                        value={exp.companyName}
+                        onChange={(e) => handleExperienceChange(index, "companyName", e.target.value)}
+                      />
+                      <input 
+                        type="text"
+                        placeholder="address"
+                        value={exp.companyAddress}
+                        onChange={(e) => handleExperienceChange(index, "companyAddress", e.target.value)}
+                      />
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "50px"}}>
+                      <select
+                        value={exp.workType}
+                        onChange={(e) =>
+                          handleExperienceChange(index, "workType", e.target.value as "Full-Time" | "Contract")
+                        }
+                      >
+                        <option value="Full-Time">Full-Time</option>
+                        <option value="Contract">Contract</option>
+                      </select>
+                      <input 
+                        type="text"
+                        placeholder="Start Date MM/DD/YYYY"
+                        value={exp.dateStart}
+                        onChange={(e) => handleExperienceChange(index, "dateStart", e.target.value)}
+                      />
+                      <input 
+                        type="text"
+                        placeholder="End date MM/DD/YYYY"
+                        value={exp.dateEnd}
+                        onChange={(e) => handleExperienceChange(index, "dateEnd", e.target.value)}
+                      />
 
-                    <button onClick={() => deleteExperienceBlock(index)} style={{marginLeft: "auto"}}>
-                      Delete
-                    </button>
+                      <button onClick={() => deleteExperienceBlock(index)} className="deleteButton">
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
 
-                {education.length < MAX_EXPERIENCE_BLOCKS && (
-                  <button onClick={addExperienceBlock}>+ Add</button>
+                {experience.length < MAX_EXPERIENCE_BLOCKS && (
+                  <button onClick={addExperienceBlock} className="addButton">+ Add</button>
                 )}
              </div>
           </div>}
@@ -430,6 +435,7 @@ const Portfolio: React.FC = () => {
    
       </div>
     </div>
+    </PageWrapper>
   );
 };
 

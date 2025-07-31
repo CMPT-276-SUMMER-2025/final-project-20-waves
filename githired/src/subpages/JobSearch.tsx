@@ -4,6 +4,7 @@ import "../css/style.css";
 import { useState } from "react";
 import { SearchBar } from "../components/searchbar";
 import { SearchResultsList } from "../components/SearchResultsList";
+import PageWrapper from '../PageWrapper';
 
 import JobCard from "../components/JobCard";
 import JobInfo from "../components/JobInfo";
@@ -25,7 +26,8 @@ const JobSearch = () => {
   };
 
   return (
-    <>
+    <PageWrapper>
+    <div>
       <SearchBar setResults={setResults} />
 
       {results.length > 0 && (
@@ -35,7 +37,8 @@ const JobSearch = () => {
       {selectedJob && (
         <JobInfo job={selectedJob} onClose={() => setSelectedJob(null)} />
       )}
-    </>
+    </div>
+    </PageWrapper>
   );
 };
 

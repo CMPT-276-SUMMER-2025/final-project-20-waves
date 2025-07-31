@@ -1,7 +1,22 @@
-body {
-  background-color: #c3a9b2;
-  margin: 0; 
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+html, body {
+  background-color: #ffffff;
+  margin: 0; 
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 
 .background-rotator {
   position: absolute;
@@ -17,7 +32,6 @@ body {
   object-fit: cover; 
   opacity: 0;
   transition: opacity 2s ease-in-out;
-  filter: grayscale(100%);
 }
 
 .bg-image.visible {
@@ -46,16 +60,20 @@ body {
   margin: 0 10px;
   padding: 10px 20px;
   text-decoration: none;
-  background-color: #785964;  
-  color: rgb(255, 255, 255);
+  background-color: #ffffff;
+  color: #1D1D1F;
   border-radius: 6px;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.2rem;
-  transition: background 0.3s;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.3s, transform 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .home-btn:hover {
-  background-color: #c3a9b2;
+  opacity: 0.85;
+  transform: scale(1.05);
 }
 
 .card-slider-container {
@@ -65,7 +83,7 @@ body {
   transform: translate(-50%, -50%);
   overflow: hidden;
   width: 100%;
-  height: 250px;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,11 +96,12 @@ body {
   height: 250px; 
   display: flex;
   align-items: center;
-  background-color: #785964; 
+  background-color: #F5F5F7;
   opacity: 0;
   transform: translateX(-100%);
   transition: all 1s ease-in-out;
-  border-radius: 15px;      
+  border-radius: 15px;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);     
 }
 
 .card-slide.active {
@@ -108,11 +127,16 @@ body {
   flex-direction: column; 
   gap: 30px; 
   margin: 0 100px;
-  color: #ffffff;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 1.2rem;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
+.card-slide-content p {
+  color: #5d5d5d;
+  font-weight: 500;
+}
 
 .texture {
   z-index: -1; 

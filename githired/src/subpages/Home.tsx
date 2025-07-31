@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import "../css/Home.css";
+import PageWrapper from '../PageWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const images = [
   '/images/Home1.png',
@@ -54,6 +56,7 @@ const Home: React.FC = () => {
   }, [currentIndex]);
 
   return (
+    <PageWrapper>
     <div>
       {/* Background Images */}
         <div className="background-rotator">
@@ -100,6 +103,7 @@ const Home: React.FC = () => {
             </div>
 
     </div>
+    </PageWrapper>
   );
 };
 

@@ -1,16 +1,40 @@
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .profile-container {
   display: flex;
   align-items: center;
   gap: 50px;
-  margin-top: 100px; 
+  margin-top: 80px; 
+  background-color: #dadada;
+  height: 300px;
+  width: 1000px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  animation: fadeInSlideUp 0.8s ease-out forwards;
+  animation-delay: 0.2s;
 }
 
 .profile-img {
   width: 200px;
   height: 200px;
   border-radius: 10%;
-  margin: 0 20px;
+  margin-left: 120px;
   cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-img:hover {
+  opacity: 0.70;
 }
 
 .profile-input {
@@ -22,47 +46,88 @@
 .profile-input input {
   padding: 10px 15px;
   font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
   width: 250px;
   transition: border-color 0.2s ease;
-  box-shadow: 0 0 5px rgba(120, 89, 100, 0.3);
 }
 
 .profile-input input:focus {
-  border-color: #785964;
+  border-color: #7a7a7a;
 }
 
 .portfolio-container {
   display:flex;
+  opacity: 0;
+  animation: fadeInSlideUp 0.8s ease-out forwards;
+  animation-delay: 1s;
 }
 
 .tab-buttons {
+  margin-top: 40px; 
   display: flex;
   flex-direction: column; 
+  gap: 5px;
 }
 
 .tab-buttons button {
   padding: 12px 20px;
   cursor: pointer;
-  border-radius: 5%;
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
   font-size: 16px;
-  color: #ffffff;
-  background-color: #917e84;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #272727;
+  background-color: #bababa;
+  border: none; 
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
+.tab-buttons button:hover {
+  opacity: 0.70;
+}
+
+
 .tab-buttons button.active {
-  background-color: #785964;
+  background-color: #cdcdcd;
   font-weight: bold;
 }
 
 .tab-content {
-  background:  #785964;
+  background:  #dadada;
   width: 1000px;
   height: 400px; 
   cursor: pointer;
-  border-radius: 3%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.tab-content input {
+  padding: 10px 15px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.tab-content select {
+  font-size: 28px;
+  width: 150px; 
+}
+
+.tab-content option {
+  font-size: 28px;
+}
+
+.tab-content input:focus {
+  border-color: #7a7a7a;
 }
 
 .autocomplete-list {
@@ -72,6 +137,13 @@
 }
 
 .wrapper {
+  background-image: url('/images/texture.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.7;
+  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center; 
@@ -79,12 +151,74 @@
 }
 
 .inputBox {
-  width: 800px;
-  height: 80px; 
-  margin: 40px 0;
+  width: 900px;
+  height: 70px; 
+  margin: 20px 0;
+  gap: 70px; 
   cursor: pointer;
-  border-radius: 3%;
-
+  border-radius: 7px;
+  background: #cdcdcd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.addButton {
+  background: #cdcdcd;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  border-radius: 5px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.addButton:hover {
+  transform: scale(1.06);
+  opacity: 0.70;
+}
+
+.deleteButton {
+  background: #ffffff;
+  color: #fe0000;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  border-radius: 5px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.deleteButton:hover {
+  transform: scale(1.06);
+  opacity: 0.70;
+}
+
+.expInputBox input {
+  font-size: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.expInputBox {
+  width: 900px;
+  height: 110px; 
+  margin: 20px 0;
+  gap: 70px; 
+  cursor: pointer;
+  border-radius: 7px;
+  background: #cdcdcd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; 
+}
+
+
+
 
 

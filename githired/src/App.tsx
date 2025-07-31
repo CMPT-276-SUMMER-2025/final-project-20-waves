@@ -31,14 +31,19 @@ const NavBar: React.FC = () => {
       <nav className="nav-container">
         <Link to="/">
           <img
-            src="images/Logo.png"
+            src="images/LogoBlack.png"
             alt="Home"
-            style={{ height: '50px' }}
+            className="logoImg"
           />
         </Link>
       </nav>
     );
   }
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
 };
 
 const App: React.FC = () => {

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/style.css";
 import InterviewQuestions from "../components/InterviewQuestions";
+import PageWrapper from '../PageWrapper';
 
 interface Job {
   id: string;
@@ -32,6 +33,7 @@ const Interview: React.FC = () => {
   };
 
   return (
+    <PageWrapper>
     <div>
       <h1>Interview Questions Feature</h1>
       <div>
@@ -44,6 +46,7 @@ const Interview: React.FC = () => {
         <InterviewQuestions job={exampleJob} onClose={closeInterviewQuestions} />
       )}
     </div>
+    </PageWrapper>
   );
 };
 
