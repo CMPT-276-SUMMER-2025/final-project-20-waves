@@ -1,4 +1,11 @@
-export const SearchResult = ({ result }) => {
+type SearchResultProps = {
+  result: {
+    title: string;
+    company: string;
+  };
+};
+
+export const SearchResult = ({ result }: SearchResultProps) => {
   return (
     <div
       className="search-result"

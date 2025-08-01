@@ -13,11 +13,16 @@ const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
 const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
 const PORT = 5000;
 
-
 const ai = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 app.use(cors());
 app.use(bodyParser.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const clientBuildPath = path.join(__dirname, "dist"); 
+
+app.use(express.static(clientBuildPath));
 
 app.post("/api/jobs", (req, res) => {
   const { keywords = "", location = "Bern", salary, radius } = req.body;
@@ -142,6 +147,10 @@ app.post("/api/interview-questions", async (req, res) => {
     console.error("Gemini error:", err);
     res.status(500).json({ error: "Failed to generate interview questions", details: err.message });
   }
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(clientBuildPath, "index.html"));
 });
 
 app.listen(PORT, () => {
