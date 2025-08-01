@@ -5,6 +5,8 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import https from "https";
+import path from "path";
+import { fileURLToPath } from "url";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
