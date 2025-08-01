@@ -151,7 +151,7 @@ app.post("/api/interview-questions", async (req, res) => {
   }
 });
 
-app.get("/(.*)/", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(clientBuildPath, "index.html"));
 });
 
