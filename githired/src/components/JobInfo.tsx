@@ -28,8 +28,6 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
       setLoading(true);
       setAiSummary(null); // reset previous summary
 
-
-
       try {
         const response = await fetch("http://localhost:5000/api/summarize", {
           method: "POST",
@@ -92,15 +90,10 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
     .trim();
 
   return (
-    <div className="jobinfo-overlay" onClick={onClose}>
-      <div className="jobinfo-card" onClick={(e) => e.stopPropagation()}>
-        <button className="close-button" onClick={onClose}>
-          ×
-        </button>
+      <div className="jobinfo-card">
         <h1>{job.title}</h1>
         <h2>{job.company}</h2>
         {job.salary && <p><strong>Salary:</strong> {job.salary}</p>}
-
 
         {loading && <p>Loading AI summary...</p>}
 
@@ -141,7 +134,6 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
           View Full Job Posting
         </a>
       </div>
-    </div>
   );
 };
 

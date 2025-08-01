@@ -8,3 +8,4 @@ export default defineConfig({
     environment: "jsdom", // Sets the testing environment to jsdom
   },
 });
+

@@ -23,13 +23,11 @@ const JobCard: React.FC<JobCardProps> = ({ job, onClick }) => {
     .trim();
 
   return (
-    <div className="job-card" style={{ caretColor: "transparent" }}>
       <div className="single-card" onClick={onClick}>
         <h2>{job.title}</h2>
         <h3>{job.company}</h3>
         <p>{cleanSnippet || "No description available."}</p>
       </div>
-    </div>
   );
 };
 

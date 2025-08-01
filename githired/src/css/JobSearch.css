@@ -1,0 +1,92 @@
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50vw;
+  height: 100%;             
+  overflow-y: auto;         
+  background-color: #ededed;
+  scroll-behavior: smooth;
+}
+
+.jobsearch-container {
+  display: flex;
+  align-items: center; 
+  height: 100%; 
+  width: 100vw;
+}
+
+.wrapper1 {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 90vh; 
+}
+
+.search-bar {
+    width:100vw; 
+    height: 50px;
+    background-color: #bcbcbc;
+    gap: 20px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1); 
+    position: relative;
+    z-index: 10;
+}
+
+.jobInfo-section {
+    height: 100%; 
+    width: 50vw; 
+    background-color: #dcdcdc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.search-bar input {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  width: 250px;
+  transition: border-color 0.2s ease;
+}
+
+.search-bar input:focus {
+  border-color: #7a7a7a;
+}
+
+.search-bar input {
+  padding: 8px 10px;
+  font-size: 10px;
+
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  width: 250px;
+  transition: border-color 0.2s ease;
+}
+
+.search-bar select {
+    font-size: 15px;
+}
+
+.search-bar button {
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #272727;
+  background-color: #ffffff;
+  border: none; 
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.search-bar button:hover {
+  opacity: 0.7;
+}

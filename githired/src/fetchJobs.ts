@@ -27,5 +27,9 @@ export async function fetchJobs(
   }
 
   const data = await response.json();
+
+  console.log("fetchJobs response data:", data); // <-- add this line to debug
+
   return data.jobs || [];
 }
+

@@ -9,10 +9,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
 
-
 const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
 const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
 const PORT = 5000;
+
 
 const ai = new GoogleGenerativeAI(GEMINI_API_KEY);
 
@@ -143,7 +143,6 @@ app.post("/api/interview-questions", async (req, res) => {
     res.status(500).json({ error: "Failed to generate interview questions", details: err.message });
   }
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
