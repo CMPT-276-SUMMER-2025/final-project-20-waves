@@ -20,7 +20,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  height: 90vh; 
+  height: 100vh; 
 }
 
 .search-bar {
@@ -40,10 +40,10 @@
     height: 100%; 
     width: 50vw; 
     background-color: #dcdcdc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    overflow-y: auto;         
+    scroll-behavior: smooth;
+    padding-bottom: 40px;
+    padding-top: 40px;
 }
 
 .search-bar input {
@@ -64,7 +64,6 @@
 .search-bar input {
   padding: 8px 10px;
   font-size: 10px;
-
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
