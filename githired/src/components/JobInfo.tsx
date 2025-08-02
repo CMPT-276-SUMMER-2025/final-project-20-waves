@@ -15,7 +15,7 @@ interface JobInfoProps {
   onClose: () => void;
 }
 
-const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
+const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -30,11 +30,14 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
       setAiSummary(null);
 
       try {
-        const response = await fetch("http://localhost:5000/api/summarize", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ jobs: [job] }),
-        });
+        const response = await fetch(
+          "https://githired-ntxa.onrender.com/api/summarize",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ jobs: [job] }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
@@ -64,11 +67,14 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
     setQuestions(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/interview-questions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ job }),
-      });
+      const res = await fetch(
+        "https://githired-ntxa.onrender.com/api/interview-questions",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ job }),
+        }
+      );
 
       if (!res.ok) {
         throw new Error(`API error: ${res.status}`);
@@ -128,9 +134,7 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
             <h3>Interview Questions</h3>
 
             {questionsLoading && <p>Loading interview questions...</p>}
-            {questionsError && (
-              <p style={{ color: "red" }}>{questionsError}</p>
-            )}
+            {questionsError && <p style={{ color: "red" }}>{questionsError}</p>}
 
             {questions && questions.length > 0 ? (
               <ul>
@@ -149,4 +153,3 @@ const JobInfo: React.FC<JobInfoProps> = ({ job, onClose }) => {
 };
 
 export default JobInfo;
-

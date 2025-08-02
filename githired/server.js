@@ -15,8 +15,6 @@ const app = express();
 const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
 const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
 const PORT = 5000;
-const GITHUB_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
-const GITHUB_USER_API_URL = "https://api.github.com/user";
 const GITHUB_CLIENT_ID = "Iv23lim0mPy31j2pxNbg";
 const GITHUB_SECRET_ID = "e755902fc5e092250b7dec0cdeaf89d525be17ab";
 
@@ -29,7 +27,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientBuildPath = path.join(__dirname, "dist");
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.static(clientBuildPath));
 
 app.post("/api/jobs", (req, res) => {

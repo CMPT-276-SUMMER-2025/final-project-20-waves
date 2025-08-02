@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/Home.css";
 import PageWrapper from "../PageWrapper";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { handleGithubLogin } from "../components/GithubLogin";
 
 const images = ["/images/Home1.png", "/images/Home2.png", "/images/Home3.jpg"];

@@ -32,4 +32,3 @@ export async function fetchJobs(
 
   return data.jobs || [];
 }
-

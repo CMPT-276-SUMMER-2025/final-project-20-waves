@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 import Portfolio from "./Portfolio";
 
 beforeEach(() => {
@@ -50,6 +50,8 @@ describe("Portfolio", () => {
 
   it("shows autocomplete input in Education tab", () => {
     render(<Portfolio />);
-    expect(screen.getByPlaceholderText(/start typing university/i)).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(/start typing university/i)
+    ).toBeInTheDocument();
   });
 });
