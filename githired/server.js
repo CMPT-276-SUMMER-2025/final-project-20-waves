@@ -24,7 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientBuildPath = path.join(__dirname, "dist"); 
 
-app.use(express.static(path.join(__dirname, "images")));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.static(clientBuildPath));
 
 app.post("/api/jobs", (req, res) => {
