@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 // Github Sign-in feature
 const CLIENT_ID = "Iv23lim0mPy31j2pxNbg";
-const REDIRECT_URI = "http://localhost:5173";
-const BACKEND_URL = "http://localhost:5173";
+const REDIRECT_URI = "https://githired-ntxa.onrender.com/";
+const BACKEND_URL = "https://githired-ntxa.onrender.com/";
 const APP_ID = "1713987";
 
 export const handleGithubLogin = () => {
