@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 // Github Sign-in feature
-const CLIENT_ID = "Iv23lim0mPy31j2pxNbg";
+const GITHUB_CLIENT_ID = "Iv23lim0mPy31j2pxNbg";
 const REDIRECT_URI = "https://githired-ntxa.onrender.com/";
 const BACKEND_URL = "https://githired-ntxa.onrender.com/";
 const APP_ID = "1713987";
 
 export const handleGithubLogin = () => {
-  const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=read:user`;
-  window.location.href = githubAuthUrl;
+  const redirectUri = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&scope=user:email`;
+  window.location.href = redirectUri;
 };
 
 const callBackendAPI = async (method: string, url: string) => {
