@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/style.css";
 import "../css/JobSearch.css";
 
@@ -7,34 +7,34 @@ import JobCard from "../components/JobCard";
 import JobInfo from "../components/JobInfo";
 import { fetchJobs } from "../fetchJobs";
 
-interface SearchBarProps {
-  setResults: (jobs: any[]) => void;
-}
-
 const JobSearch = () => {
   const [results, setResults] = useState<any[]>([]);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [hasSearched, setHasSearched] = useState(false); // New state
-
-  const handleCardClick = (job: any) => {
-    setSelectedJob(job);
-  };
-
-  const handleResultsUpdate = (jobs: any[]) => {
-    console.log("Jobs received:", jobs);
-    if (jobs.length === 0) {
-      console.log("The jobs array is EMPTY!");
-    } else {
-      console.log(`The jobs array has ${jobs.length} items.`);
-    }
-    setResults(jobs);
-    setHasSearched(true);
-  };
+  const [hasSearched, setHasSearched] = useState(false);
 
   const [keywords, setKeywords] = useState("");
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [radius, setRadius] = useState("0");
+
+  // Fetch default/random jobs on first render
+  useEffect(() => {
+    const loadDefaultJobs = async () => {
+      try {
+        const jobs = await fetchJobs("", "", "", "0"); // You can use real default values here
+        setResults(jobs);
+      } catch (error) {
+        console.error("Error fetching default jobs:", error);
+        setResults([]);
+      }
+    };
+
+    loadDefaultJobs();
+  }, []);
+
+  const handleCardClick = (job: any) => {
+    setSelectedJob(job);
+  };
 
   const handleSearch = async () => {
     try {
@@ -45,18 +45,18 @@ const JobSearch = () => {
         radius
       );
       setResults(jobs);
+      setHasSearched(true);
     } catch (error) {
       console.error("Error fetching jobs:", error);
       setResults([]);
     }
   };
 
-
   return (
     <PageWrapper>
       <div className="wrapper1">
         <div>
-          {/* Search bar component - updates job results on search */}
+          {/* Search Bar */}
           <div className="search-bar">
             <input
               type="text"
@@ -88,21 +88,20 @@ const JobSearch = () => {
             <button onClick={handleSearch}>Search</button>
           </div>
         </div>
-        <div className="jobsearch-container">
 
-          {/* Grid container showing all job cards */}
+        <div className="jobsearch-container">
+          {/* Grid of Job Cards */}
           <div className="grid-container">
             {results.map((job) => (
               <JobCard key={job.id} job={job} onClick={() => handleCardClick(job)} />
             ))}
           </div>
+
+          {/* Detailed Job Info */}
           <div className="jobInfo-section">
-            {/* Show message if user has searched but no jobs were found */}
             {hasSearched && results.length === 0 && (
               <p style={{ padding: "1rem", color: "red" }}>No jobs found. Please try different keywords.</p>
             )}
-
-            {/* Show detailed job info when a job is selected */}
             {selectedJob && (
               <JobInfo job={selectedJob} onClose={() => setSelectedJob(null)} />
             )}
@@ -114,4 +113,5 @@ const JobSearch = () => {
 };
 
 export default JobSearch;
+
 
