@@ -11,9 +11,14 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
 
+// Should move to .env file
 const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
 const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
 const PORT = 5000;
+const GITHUB_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token";
+const GITHUB_USER_API_URL = "https://api.github.com/user";
+const GITHUB_CLIENT_ID = "Iv23lim0mPy31j2pxNbg";
+const GITHUB_SECRET_ID = "e755902fc5e092250b7dec0cdeaf89d525be17ab";
 
 const ai = new GoogleGenerativeAI(GEMINI_API_KEY);
 
@@ -22,7 +27,7 @@ app.use(bodyParser.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const clientBuildPath = path.join(__dirname, "dist"); 
+const clientBuildPath = path.join(__dirname, "dist");
 
 app.use(express.static(clientBuildPath));
 
@@ -142,19 +147,79 @@ app.post("/api/interview-questions", async (req, res) => {
     const text = result.response.text();
 
     // Assume questions are separated by new lines, split and filter empty lines
-    const questions = text.split("\n").map(q => q.trim()).filter(q => q.length > 0);
+    const questions = text
+      .split("\n")
+      .map((q) => q.trim())
+      .filter((q) => q.length > 0);
 
     res.json({ questions });
   } catch (err) {
     console.error("Gemini error:", err);
-    res.status(500).json({ error: "Failed to generate interview questions", details: err.message });
+    res.status(500).json({
+      error: "Failed to generate interview questions",
+      details: err.message,
+    });
   }
 });
 
-app.get('/{*any}', (req, res) => {
+app.get("/{*any}", (req, res) => {
   res.sendFile(path.join(clientBuildPath, "index.html"));
 });
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
+});
+
+// Express route for Github Login
+app.get("/external-signup", async (req, res) => {
+  try {
+    const code = req.query.accessToken;
+    if (!code) return res.status(400).json({ error: "Missing code" });
+
+    // Step 1: Exchange code for access token
+    const tokenResponse = await fetch(
+      "https://github.com/login/oauth/access_token",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          client_id: GITHUB_CLIENT_ID,
+          client_secret: GITHUB_SECRET_ID,
+          code: code,
+        }),
+      }
+    );
+
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
+
+    if (!accessToken) {
+      return res.status(401).json({ error: "Failed to obtain access token" });
+    }
+
+    // Step 2: Fetch user profile
+    const userProfileResponse = await fetch("https://api.github.com/user", {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const userProfile = await userProfileResponse.json();
+
+    res.json({
+      name: userProfile.name,
+      email: userProfile.email,
+      avatar: userProfile.avatar_url,
+      githubUsername: userProfile.login,
+    });
+  } catch (err) {
+    console.error("GitHub login error:", err);
+    res
+      .status(500)
+      .json({ error: "GitHub login failed", details: err.message });
+  }
 });
