@@ -4,7 +4,7 @@ export async function fetchJobs(
   salary?: string,
   radius?: string
 ) {
-  const url = `http://localhost:5000/api/jobs`;
+  const url = `/api/jobs`;
 
   const requestBody: any = {
     keywords,
