@@ -4,7 +4,7 @@ export async function fetchJobs(
   salary?: string,
   radius?: string
 ) {
-  const url = `http://localhost:5000/api/jobs`;
+  const url = `https://githired-ntxa.onrender.com/api/jobs`;
 
   const requestBody: any = {
     keywords,
@@ -32,4 +32,3 @@ export async function fetchJobs(
 
   return data.jobs || [];
 }
-
