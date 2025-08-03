@@ -25,7 +25,7 @@ const InterviewQuestions: React.FC<InterviewQuestionsProps> = ({ job, onClose })
       setQuestions(null);
 
       try {
-        const res = await fetch("http://localhost:5000/api/interview-questions", {
+        const res = await fetch("https://githired-ntxa.onrender.com/api/interview-questions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ job }),
