@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 // Github Sign-in feature
-const CLIENT_ID = "Iv23lim0mPy31j2pxNbg";
-const REDIRECT_URI = "http://localhost:5173";
-const BACKEND_URL = "http://localhost:5173";
-const APP_ID = "1713987";
+const CLIENT_ID = process.env.CLIENT_ID;
+const APP_ID = process.env.APP_ID;
+
+const REDIRECT_URI = "https://githired-ntxa.onrender.com/";
+const BACKEND_URL = "https://githired-ntxa.onrender.com/";
 
 export const handleGithubLogin = () => {
   const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=read:user`;
