@@ -46,4 +46,48 @@ Please avoid technical/coding questions.
   }
 });
 
+router.post("/cover-letter-feedback", async (req, res) => {
+  console.log("🟢 Received POST /api/cover-letter-feedback with data:", req.body);
+
+  const { jobDescription, coverLetter } = req.body;
+
+  if (!jobDescription || !coverLetter) {
+    return res.status(400).json({ error: "Missing job description or cover letter" });
+  }
+
+  const prompt = `
+You are a professional cover letter reviewer.
+Please analyze the following cover letter and give constructive feedback in the context of the job description.
+Focus on tone, structure, relevance, clarity, and persuasiveness.
+
+Job Description:
+${jobDescription}
+
+Cover Letter:
+${coverLetter}
+
+Provide your suggestions in bullet points or short paragraphs.
+  `;
+
+  try {
+    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
+    });
+
+    const feedback = result.response.text();
+    res.json({ feedback });
+  } catch (error) {
+    console.error("Gemini API error (cover-letter):", error);
+    res.status(500).json({ error: "Failed to generate cover letter feedback" });
+  }
+});
+
+
+
 export default router;

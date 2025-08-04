@@ -10,11 +10,10 @@ const CoverLetterH: React.FC = () => {
 
   return (
     <div style={{ padding: "1rem" }}>
-      <label htmlFor="job-title">Job Title:</label>
+      <label htmlFor="">Job Title:</label>
       <input
         type="text"
-        id="job-title"
-        value={jobTitle}
+        
         onChange={handleChange}
         placeholder="Enter job title..."
         className ="cl-box"
