@@ -21,8 +21,8 @@ const NavBar: React.FC = () => {
           <Link to="/portfolio">Portfolio</Link>
         </div>
         <div className="nav-elements">
-          <img src="/images/interview.png" alt="Logo" className="nav-img" />
-          <Link to="/interview">Interview</Link>
+          <img src="/images/interview.png" alt="Logo" className="nav-img" /> 
+          <Link to="/cover-letter">Cover Letter Helper</Link>
         </div>
       </nav>
     );
@@ -54,7 +54,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/job-search" element={<JobSearch />} />
         <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/interview" element={<Interview />} />
+        <Route path="/cover-letter" element={<Interview />} />
       </Routes>
     </Router>
   );

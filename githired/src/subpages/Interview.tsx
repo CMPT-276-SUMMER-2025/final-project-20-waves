@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../css/style.css";
 import InterviewQuestions from "../components/InterviewQuestions";
 import PageWrapper from '../PageWrapper';
+import CoverLetterH from '../components/CoverLetterH'
 
 interface Job {
   id: string;
@@ -36,15 +37,7 @@ const Interview: React.FC = () => {
     <PageWrapper>
     <div>
       <h1>Interview Questions Feature</h1>
-      <div>
-        <h2>{exampleJob.title} @ {exampleJob.company}</h2>
-        <p>{exampleJob.snippet}</p>
-        <button onClick={openInterviewQuestions}>Show Interview Questions</button>
-      </div>
-
-      {showQuestions && (
-        <InterviewQuestions job={exampleJob} onClose={closeInterviewQuestions} />
-      )}
+        const CoverLetterH();
     </div>
     </PageWrapper>
   );
