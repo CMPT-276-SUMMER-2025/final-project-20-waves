@@ -9,6 +9,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+
 const app = express();
 
 // Should move to .env file
@@ -160,6 +161,50 @@ app.post("/api/interview-questions", async (req, res) => {
     });
   }
 });
+
+app.post("/api/cover-letter-feedback", async (req, res) => {
+  try {
+    const { jobDescription, coverLetter } = req.body;
+
+    if (!jobDescription || !coverLetter) {
+      return res.status(400).json({ error: "Missing job description or cover letter" });
+    }
+
+    const prompt = `
+You are an AI assistant helping job applicants improve their cover letters.
+Given the following job description and cover letter, provide constructive, specific feedback
+on how the applicant could improve their writing.
+
+Job Description:
+${jobDescription}
+
+Cover Letter:
+${coverLetter}
+`;
+
+    const model = ai.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+
+    const result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
+    });
+
+    const feedback = result.response.text();
+
+    res.json({ feedback });
+  } catch (err) {
+    console.error("Gemini error (feedback):", err);
+    res.status(500).json({
+      error: "Failed to generate cover letter feedback",
+      details: err.message,
+    });
+  }
+});
+
 
 app.get("/{*any}", (req, res) => {
   res.sendFile(path.join(clientBuildPath, "index.html"));
