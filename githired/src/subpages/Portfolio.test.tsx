@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
 import Portfolio from "./Portfolio";
+import { MemoryRouter } from "react-router-dom";
 
 beforeEach(() => {
   Storage.prototype.getItem = vi.fn(() => null);
@@ -11,7 +12,11 @@ beforeEach(() => {
 
 describe("Portfolio", () => {
   it("renders all profile input fields", () => {
-    render(<Portfolio />);
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
     expect(screen.getByPlaceholderText(/Name/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Birth/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Email/i)).toBeInTheDocument();
@@ -19,7 +24,11 @@ describe("Portfolio", () => {
   });
 
   it("updates name input and saves to localStorage", () => {
-    render(<Portfolio />);
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
     const nameInput = screen.getByPlaceholderText(/Name/i);
     fireEvent.change(nameInput, { target: { value: "Alice" } });
     expect(nameInput).toHaveValue("Alice");
@@ -27,13 +36,21 @@ describe("Portfolio", () => {
   });
 
   it("shows default profile image if none is set", () => {
-    render(<Portfolio />);
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
     const img = screen.getByAltText(/profile/i) as HTMLImageElement;
     expect(img.src).toMatch(/default-profile\.png$/);
   });
 
   it("renders all tab buttons", () => {
-    render(<Portfolio />);
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
     expect(screen.getByText(/Education/i)).toBeInTheDocument();
     expect(screen.getByText(/Projects/i)).toBeInTheDocument();
     expect(screen.getByText(/Skills summary/i)).toBeInTheDocument();
@@ -41,7 +58,11 @@ describe("Portfolio", () => {
   });
 
   it("switches tab content when tab is clicked", () => {
-    render(<Portfolio />);
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
     fireEvent.click(screen.getByText(/Projects/i));
     expect(screen.getByText(/content here/i)).toBeInTheDocument();
     fireEvent.click(screen.getByText(/Skills summary/i));
@@ -49,7 +70,11 @@ describe("Portfolio", () => {
   });
 
   it("shows autocomplete input in Education tab", () => {
-    render(<Portfolio />);
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
     expect(
       screen.getByPlaceholderText(/start typing university/i)
     ).toBeInTheDocument();
