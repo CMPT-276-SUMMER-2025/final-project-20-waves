@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 
 import JobSearch from './subpages/JobSearch';
 import Portfolio from './subpages/Portfolio';
-import Interview from './subpages/Interview';
+import Interview from './subpages/CoverLetterH';
 import Home from './subpages/Home';
+import CoverLetterH from './subpages/CoverLetterH';
 
 const NavBar: React.FC = () => {
   const location = useLocation();
@@ -54,7 +55,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/job-search" element={<JobSearch />} />
         <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/cover-letter" element={<Interview />} />
+        <Route path="/cover-letter" element={<CoverLetterH />} />
       </Routes>
     </Router>
   );

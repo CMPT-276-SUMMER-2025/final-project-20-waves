@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import Interview from "./Interview";
+import Interview from "./CoverLetterH";
 
 // Mock PageWrapper to just render children
 vi.mock("../PageWrapper", () => ({

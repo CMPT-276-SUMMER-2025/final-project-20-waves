@@ -8,9 +8,28 @@ import https from "https";
 import path from "path";
 import { fileURLToPath } from "url";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import multer from "multer";
+import pdfParse from "pdf-parse";
 
 
 const app = express();
+const router = express.Router();
+const upload = multer();
+
+router.post("/api/extract-pdf-text", upload.single("file"), async (req, res) => {
+  try {
+    const buffer = req.file?.buffer;
+    if (!buffer) return res.status(400).json({ error: "No file uploaded" });
+
+    const data = await pdfParse(buffer);
+    return res.json({ text: data.text });
+  } catch (err) {
+    console.error("PDF extraction error:", err);
+    return res.status(500).json({ error: "Failed to extract text from PDF" });
+  }
+});
+
+export default router;
 
 // Should move to .env file
 const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";

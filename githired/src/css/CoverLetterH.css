@@ -1,0 +1,108 @@
+.input-container {
+  height: 100%;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: #ededed;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.feedback-container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  height: 100%;
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ededed;
+}
+
+.cl-textarea {
+  border: none;
+  width: 80%;
+  height: 20%;
+  background-color: #ffffff;
+  border-radius: 15px;  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  
+  padding: 30px;
+}
+
+.modeButton  {
+  padding: 7px 15px; 
+  margin: 0 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 7px;  
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+  transition: color 0.3s ease, transform 0.3s ease;  
+}
+
+.modeButton:hover {
+ opacity: 0.7;
+ transform: scale(1.06);
+}
+
+.cl-button{
+  padding: 10px 20px; 
+  margin: 0 20px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 7px;  
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); 
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.cl-button:hover {
+ opacity: 0.7;
+ transform: scale(1.06);
+}
+
+.uploadPDF {
+  padding: 10px 20px; 
+  margin: 30px 0;
+  font-size: 15px;
+  border: none;
+  background-color: #dfdfdf;
+  border-radius: 7px;  
+}
+
+.cl-feedback {
+  padding: 40px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border-radius: 10px;  
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); 
+  width: 80%;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.cl-feedback pre {
+  white-space: pre-wrap; 
+  word-break: break-word; 
+}
+
+.cl-wrapper {
+  position: absolute;
+  display:flex; 
+  align-items: center;
+  height: 95vh;
+}
+
+.input-container h1 {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  color: #1b1b1b;
+}
+
