@@ -103,7 +103,7 @@ const Home: React.FC = () => {
             >
               <img src={card.image} alt={card.title} />
               <div className="card-slide-content">
-                <h2>{card.title}</h2>
+                <h1>{card.title}</h1>
                 <p>{card.description}</p>
               </div>
             </div>
