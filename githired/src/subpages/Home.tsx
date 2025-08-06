@@ -74,11 +74,7 @@ const Home: React.FC = () => {
           <img src="/images/Logo.png" alt="Logo" className="home-logo" />
           <div>
             <Link to="/login" onClick={handleGithubLogin} className="home-btn">
-<<<<<<< HEAD
               Login to Github
-=======
-              Login with GitHub
->>>>>>> 8e11df5948f74cbdbc25f5abd81d127faa49cfd1
             </Link>
           </div>
         </div>

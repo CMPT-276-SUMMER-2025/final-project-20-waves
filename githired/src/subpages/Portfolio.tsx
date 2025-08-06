@@ -346,7 +346,7 @@ const Portfolio: React.FC = () => {
                     onChange={(e) => handleProjectChange(index, "role", e.target.value)}
                   >
                     <option value="">Role</option>
-                    {codeLanguages.map((lang) => (
+                    {role.map((lang) => (
                       <option key={lang} value={lang}>{lang}</option>
                     ))}
                   </select>
