@@ -21,7 +21,7 @@ const JobSearch = () => {
   useEffect(() => {
     const loadDefaultJobs = async () => {
       try {
-        const jobs = await fetchJobs("", "", "", "0"); // You can use real default values here
+        const jobs = await fetchJobs("software", "ontario", "0", "0"); // You can use real default values here
         setResults(jobs);
       } catch (error) {
         console.error("Error fetching default jobs:", error);
