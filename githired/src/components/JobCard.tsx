@@ -7,6 +7,8 @@ interface Job {
   company: string;
   snippet?: string;
   link: string;
+  location?: string;
+  salary?: string;
 }
 
 interface JobCardProps {
@@ -26,6 +28,8 @@ const JobCard: React.FC<JobCardProps> = ({ job, onClick }) => {
     <div className="single-card" onClick={onClick}>
       <h2>{job.title}</h2>
       <h3>{job.company}</h3>
+      <h4>{job.location || "Location not specified"}</h4>
+      <h4>{job.salary ? `$${job.salary}` : "Salary not specified"}</h4>
       <p>{cleanSnippet || "No description available."}</p>
     </div>
   );

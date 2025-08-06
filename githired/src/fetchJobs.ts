@@ -30,12 +30,7 @@ export async function fetchJobs(
 
   console.log("fetchJobs response data:", data); // <-- add this line to debug
 
-  // ✅ Minimal change: include location and salary
-  return (data.jobs || []).map((job: any) => ({
-    ...job,
-    location: job.location ?? "",
-    salary: job.salary ?? "",
-  }));
+  return data.jobs || [];
 }
 
 
