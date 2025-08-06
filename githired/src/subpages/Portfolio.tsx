@@ -342,7 +342,7 @@ const Portfolio: React.FC = () => {
                     onChange={(e) => handleProjectChange(index, "projectName", e.target.value)}
                   />
                   <select
-                    value={proj.codeLanguage}
+                    value={proj.role}
                     onChange={(e) => handleProjectChange(index, "role", e.target.value)}
                   >
                     <option value="">Role</option>
