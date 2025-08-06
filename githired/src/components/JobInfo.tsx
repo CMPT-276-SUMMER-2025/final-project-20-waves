@@ -7,8 +7,8 @@ interface Job {
   company: string;
   snippet?: string;
   link: string;
-  salary?: string;
-  location?: string;
+  salary: string;
+  location: string;
 }
 
 interface JobInfoProps {
