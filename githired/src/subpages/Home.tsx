@@ -76,9 +76,6 @@ const Home: React.FC = () => {
             <Link to="/login" onClick={handleGithubLogin} className="home-btn">
               Login
             </Link>
-            <Link to="/signup" className="home-btn">
-              Sign Up
-            </Link>
           </div>
         </div>
 
