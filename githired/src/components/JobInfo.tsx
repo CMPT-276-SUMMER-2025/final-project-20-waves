@@ -105,6 +105,14 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
             <strong>Salary:</strong> {job.salary}
           </p>
         )}
+        {job.link && (
+          <p>
+            <strong>Job Link: </strong>
+            <a href={job.link} target="_blank" rel="noopener noreferrer">
+              View Job Posting
+            </a>
+          </p>
+)}
 
         {loading && <p>Loading AI summary...</p>}
 
