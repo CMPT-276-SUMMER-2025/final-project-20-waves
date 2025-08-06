@@ -8,6 +8,7 @@ interface Job {
   snippet?: string;
   link: string;
   salary?: string;
+  location?: string;
 }
 
 interface JobInfoProps {
@@ -100,6 +101,11 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
       <div className="jobinfo-card">
         <h1>{job.title}</h1>
         <h2>{job.company}</h2>
+        {job.location && (
+          <p>
+            <strong>Location:</strong> {job.location}
+          </p>
+        )}
         {job.salary && (
           <p>
             <strong>Salary:</strong> {job.salary}
@@ -112,7 +118,7 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
               View Job Posting
             </a>
           </p>
-)}
+        )}
 
         {loading && <p>Loading AI summary...</p>}
 
