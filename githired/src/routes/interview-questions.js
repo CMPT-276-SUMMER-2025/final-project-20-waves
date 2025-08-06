@@ -93,19 +93,5 @@ Provide your suggestions in bullet points or short paragraphs.
   }
 });
 
-router.post("/extract-pdf-text", upload.single("file"), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
-
-    const data = await pdfParse(req.file.buffer);
-    res.json({ text: data.text });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to extract text from PDF" });
-  }
-});
-
 
 export default router;

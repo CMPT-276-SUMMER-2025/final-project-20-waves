@@ -7,137 +7,87 @@ const CoverLetterH: React.FC = () => {
   const [jobDescription, setJobDescription] = useState("");
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [inputMode, setInputMode] = useState<"manual" | "upload">("manual");
 
   const handleSubmit = async () => {
-  if (!jobDescription || !coverLetter) {
-    setFeedback("❌ Please provide both a job description and a cover letter.");
-    return;
-  }
-
-  setLoading(true);
-  setFeedback("");
-
-  try {
-    const response = await fetch("/api/cover-letter-feedback", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ jobDescription, coverLetter }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      setFeedback(data.feedback);
-    } else {
-      setFeedback("❌ Failed to get feedback. " + data.error);
+    if (!jobDescription || !coverLetter) {
+      setFeedback("❌ Please provide both a job description and a cover letter.");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    setFeedback("❌ An error occurred while contacting the server.");
-  }
 
-  setLoading(false);
-};
-
-
-  const handlePDFUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setPdfFile(file);
-
-    const formData = new FormData();
-    formData.append("file", file);
+    setLoading(true);
+    setFeedback("");
 
     try {
-      const res = await fetch("/api/extract-pdf-text", {
+      const response = await fetch("/api/cover-letter-feedback", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ jobDescription, coverLetter }),
       });
 
-      const data = await res.json();
-      if (res.ok && data.text) {
-        setCoverLetter(data.text);
+      const data = await response.json();
+      if (response.ok) {
+        setFeedback(data.feedback);
       } else {
-        setFeedback("❌ Failed to extract text from PDF. " + data.error);
+        setFeedback("❌ Failed to get feedback. " + data.error);
       }
-    } catch (err) {
-      console.error(err);
-      setFeedback("❌ Error uploading or reading PDF.");
+    } catch (error) {
+      console.error(error);
+      setFeedback("❌ An error occurred while contacting the server.");
     }
+
+    setLoading(false);
   };
 
   return (
     <PageWrapper>
-    <div>
-      <div className="cl-wrapper">
-      <div className="input-container">
-        <h1>Job Description</h1>
-        <textarea
-          value={jobDescription}
-          onChange={(e) => setJobDescription(e.target.value)}
-          placeholder="Paste the job description here"
-          className="cl-textarea"
-        />
-        <h1 style={{ marginTop: "70px" }}>Cover Letter</h1>
-        <div>
-          <button className="modeButton" onClick={() => {
-            setInputMode("manual");
-            setCoverLetter(""); // clear PDF text when switching to manual
-          }} disabled={inputMode === "manual"}>
-            Write Manually
-          </button>
-          <button className="modeButton" onClick={() => {setInputMode("upload"); setCoverLetter("");}} disabled={inputMode === "upload"}>
-            Upload PDF
-          </button>
-        </div>
+      <div>
+        <div className="cl-wrapper">
+          <div className="input-container">
+            <h1>Job Description</h1>
+            <textarea
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+              placeholder="Paste the job description here"
+              className="cl-textarea"
+            />
 
-        {inputMode === "manual" ? (
-          <>
+            <h1 style={{ marginTop: "70px" }}>Cover Letter</h1>
             <textarea
               value={coverLetter}
               onChange={(e) => setCoverLetter(e.target.value)}
               placeholder="Paste your cover letter here"
               className="cl-textarea"
             />
-          </>
-        ) : (
-          <>
-            <input className="uploadPDF" type="file" accept=".pdf" onChange={handlePDFUpload} />
-            {coverLetter && (
-              <textarea
-                value={coverLetter}
-                readOnly
-                className="cl-textarea"
-                placeholder="Extracted text from PDF will appear here..."
-              />
-            )}
-          </>
-        )}
-        <button onClick={handleSubmit} disabled={loading} className="cl-button">
-          {loading ? "Analyzing..." : "Get Feedback"}
-        </button>
-      </div>
 
-        <div className="feedback-container">
-          {feedback ? (
-            <div className="cl-feedback">
-              <h3>AI Feedback:</h3>
-              <pre>{feedback}</pre>
-            </div>
-          ) : (
-            <div>
-              <img className="chatbot-img" src={'/images/chatbot.png'} alt="chatbot-img" style={{ height: "500px", width:"500px", opacity:"0.15"}}/>
-              <p>
-                Please submit your cover letter and job description to receive feedback.
-              </p>
-            </div>
-          )}
+            <button onClick={handleSubmit} disabled={loading} className="cl-button">
+              {loading ? "Analyzing..." : "Get Feedback"}
+            </button>
+          </div>
+
+          <div className="feedback-container">
+            {feedback ? (
+              <div className="cl-feedback">
+                <h3>AI Feedback:</h3>
+                <pre>{feedback}</pre>
+              </div>
+            ) : (
+              <div>
+                <img
+                  className="chatbot-img"
+                  src={"/images/chatbot.png"}
+                  alt="chatbot-img"
+                  style={{ height: "500px", width: "500px", opacity: "0.15" }}
+                />
+                <p>
+                  Please submit your cover letter and job description to receive feedback.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </PageWrapper>
   );
 };
