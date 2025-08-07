@@ -5,3 +5,22 @@ Project Title: GitHired
 Group Members: Andrew Fassler, Eric Kim, Aaron Sutanto, Alexis Yew
 
 Brief Description: A job site designed specifically to help software practitioners connect with the right companies and support them in seeking and securing employment.
+
+Local Host Steps:
+ 1. Here is a list of dependencies the application needs to through local host.
+    Important/Essential: @google/generative-ai"
+             react-router-dom@google/generative-ai
+             dotenv
+             react-router-dom@types/react-dom
+             typescript
+             autoprefixer
+    Non-Important:
+             tailwindcss
+             postcss
+
+2. Next, add the .env file to ./githired (should be included in submission). This file contains the API keys
+3. Next, you want to open a new terminal. I recommend using VSCode built in Terminal for organization.
+4. In the new terminal navigate to "./githired" and run "node server.js"
+5. In the first terminal, navigate to "./githired" and type "npm run dev"
+6. The project should run, but the features don't work on local host, as the APIs route to the deployed website instead. 
+ Everything except for Jobsearch and Cover Letter Helper should be functional.
