@@ -1,16 +1,35 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+/**
+ * NavBar component renders different navigation menus based on current URL path:
+ *  - On homepage ('/'): shows links with icons to Job Search, Portfolio, and Cover Letter Helper pages
+ *  - On other pages: shows a home logo linking back to homepage
+ * Uses `useLocation` hook from react-router-dom to get current path.
+ *
+ * App component wraps the app with Router and defines Routes for:
+ *  - '/' → Home component
+ *  - '/job-search' → JobSearch component
+ *  - '/portfolio' → Portfolio component
+ *  - '/cover-letter' → CoverLetterH component
+ */
 
-import JobSearch from './subpages/JobSearch';
-import Portfolio from './subpages/Portfolio';
-import Interview from './subpages/CoverLetterH';
-import Home from './subpages/Home';
-import CoverLetterH from './subpages/CoverLetterH';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
+
+import JobSearch from "./subpages/JobSearch";
+import Portfolio from "./subpages/Portfolio";
+import CoverLetterH from "./subpages/CoverLetterH";
+import Home from "./subpages/Home";
 
 const NavBar: React.FC = () => {
   const location = useLocation();
 
-  if (location.pathname === '/') {
+  // Render navigation for homepage with links and icons to other pages
+  if (location.pathname === "/") {
     return (
       <nav className="nav-container">
         <div className="nav-elements">
@@ -22,29 +41,21 @@ const NavBar: React.FC = () => {
           <Link to="/portfolio">Portfolio</Link>
         </div>
         <div className="nav-elements">
-          <img src="/images/interview.png" alt="Logo" className="nav-img" /> 
+          <img src="/images/interview.png" alt="Logo" className="nav-img" />
           <Link to="/cover-letter">Cover Letter Helper</Link>
         </div>
       </nav>
     );
-  } else {
-    return (
-      <nav className="nav-container">
-        <Link to="/">
-          <img
-            src="images/LogoBlack.png"
-            alt="Home"
-            className="logoImg"
-          />
-        </Link>
-      </nav>
-    );
   }
 
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+  // Render minimal nav with home logo linking back to homepage for other routes
+  return (
+    <nav className="nav-container">
+      <Link to="/">
+        <img src="images/LogoBlack.png" alt="Home" className="logoImg" />
+      </Link>
+    </nav>
+  );
 };
 
 const App: React.FC = () => {

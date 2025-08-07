@@ -1,8 +1,23 @@
+/**
+ * Home component displays the landing page with:
+ *  - Rotating background images every 5 seconds
+ *  - Rotating informational cards every 5 seconds
+ *  - Login button that triggers GitHub login handler
+ *
+ * State:
+ *  - bgIndex: current index of visible background image
+ *  - currentIndex: index of the currently active card
+ *  - prevIndex: index of the previously active card for animation
+ *
+ * Effects:
+ *  - Background images rotate automatically on a timer
+ *  - Cards rotate automatically on a timer, tracking current and previous for transitions
+ */
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/Home.css";
 import PageWrapper from "../PageWrapper";
-// import { useNavigate } from "react-router-dom";
 import { handleGithubLogin } from "../components/GithubLogin";
 
 const images = ["/images/Home1.png", "/images/Home2.png", "/images/Home3.jpg"];
@@ -33,11 +48,10 @@ const cardsData = [
 
 const Home: React.FC = () => {
   const [bgIndex, setBgIndex] = useState(0);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
 
-  // Rotate background images every 5 seconds
+  // Cycle background images every 5 seconds by incrementing bgIndex modulo number of images
   useEffect(() => {
     const interval = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % images.length);
@@ -45,7 +59,7 @@ const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Rotate cards every 5 seconds
+  // Cycle cards every 5 seconds, tracking previous and current index for CSS transitions
   useEffect(() => {
     const interval = setInterval(() => {
       setPrevIndex(currentIndex);
@@ -57,7 +71,7 @@ const Home: React.FC = () => {
   return (
     <PageWrapper>
       <div>
-        {/* Background Images */}
+        {/* Background image rotator */}
         <div className="background-rotator">
           {images.map((img, index) => (
             <img
@@ -69,26 +83,24 @@ const Home: React.FC = () => {
           ))}
         </div>
 
-        {/* Main Content */}
+        {/* Main content with logo and GitHub login */}
         <div className="home-container">
           <img src="/images/Logo.png" alt="Logo" className="home-logo" />
           <div>
             <Link to="/login" onClick={handleGithubLogin} className="home-btn">
-              Login
-            </Link>
-            <Link to="/signup" className="home-btn">
-              Sign Up
+              Login to Github
             </Link>
           </div>
         </div>
 
+        {/* Background texture overlay */}
         <img
           src="/images/texture.png"
           alt="background texture"
           className="texture"
         />
 
-        {/* Card Slider */}
+        {/* Card slider showing current and previous cards for animation */}
         <div className="card-slider-container">
           {cardsData.map((card, index) => (
             <div

@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import JobInfo from "../components/JobInfo";
 
@@ -11,7 +11,7 @@ const mockJob = {
   title: "Frontend Developer",
   company: "Tech Corp",
   snippet: "<b>Great job!</b>&nbsp;Apply now.",
-  link: "https://example.com/job/1"
+  link: "https://example.com/job/1",
 };
 
 describe("JobInfo", () => {
@@ -41,14 +41,18 @@ describe("JobInfo", () => {
     expect(onClose).toHaveBeenCalledTimes(1);
 
     // Overlay click
-    fireEvent.click(screen.getByText(/Frontend Developer/i).closest(".jobinfo-overlay")!);
+    fireEvent.click(
+      screen.getByText(/Frontend Developer/i).closest(".jobinfo-overlay")!
+    );
     expect(onClose).toHaveBeenCalledTimes(2);
   });
 
   it("shows loading and then AI summary", async () => {
     render(<JobInfo job={mockJob} onClose={vi.fn()} />);
     expect(screen.getByText(/Loading AI summary/i)).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText(/AI Summary:/i)).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText(/AI Summary:/i)).toBeInTheDocument()
+    );
     expect(screen.getByText(/AI generated summary/i)).toBeInTheDocument();
   });
 
@@ -57,7 +61,9 @@ describe("JobInfo", () => {
       Promise.reject(new Error("API error"))
     );
     render(<JobInfo job={mockJob} onClose={vi.fn()} />);
-    await waitFor(() => expect(screen.getByText(/Failed to load AI summary/i)).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText(/Failed to load AI summary/i)).toBeInTheDocument()
+    );
   });
 
   it("renders external job link", () => {

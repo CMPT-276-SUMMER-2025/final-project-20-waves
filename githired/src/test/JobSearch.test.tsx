@@ -8,7 +8,9 @@ import JobSearch from "../subpages/JobSearch";
 // Mock dependencies
 vi.mock("../PageWrapper", () => ({
   __esModule: true,
-  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 vi.mock("../components/JobCard", () => ({
   __esModule: true,
@@ -63,11 +65,17 @@ describe("JobSearch", () => {
 
   it("updates input fields when user types", () => {
     render(<JobSearch />);
-    fireEvent.change(screen.getByPlaceholderText(/Keywords/i), { target: { value: "React" } });
+    fireEvent.change(screen.getByPlaceholderText(/Keywords/i), {
+      target: { value: "React" },
+    });
     expect(screen.getByPlaceholderText(/Keywords/i)).toHaveValue("React");
-    fireEvent.change(screen.getByPlaceholderText(/Location/i), { target: { value: "Vancouver" } });
+    fireEvent.change(screen.getByPlaceholderText(/Location/i), {
+      target: { value: "Vancouver" },
+    });
     expect(screen.getByPlaceholderText(/Location/i)).toHaveValue("Vancouver");
-    fireEvent.change(screen.getByPlaceholderText(/Minimum Salary/i), { target: { value: "100000" } });
+    fireEvent.change(screen.getByPlaceholderText(/Minimum Salary/i), {
+      target: { value: "100000" },
+    });
     expect(screen.getByPlaceholderText(/Minimum Salary/i)).toHaveValue(100000);
     fireEvent.change(screen.getByRole("combobox"), { target: { value: "8" } });
     expect(screen.getByRole("combobox")).toHaveValue("8");
@@ -76,7 +84,9 @@ describe("JobSearch", () => {
   it("fetches and displays jobs when search is clicked", async () => {
     fetchJobsMock.mockResolvedValueOnce(mockJobs);
     render(<JobSearch />);
-    fireEvent.change(screen.getByPlaceholderText(/Keywords/i), { target: { value: "React" } });
+    fireEvent.change(screen.getByPlaceholderText(/Keywords/i), {
+      target: { value: "React" },
+    });
     fireEvent.click(screen.getByRole("button", { name: /search/i }));
     await waitFor(() => {
       expect(fetchJobsMock).toHaveBeenCalledWith("React", "", "", "0");
@@ -96,7 +106,9 @@ describe("JobSearch", () => {
   it("shows job info when a job card is clicked", async () => {
     fetchJobsMock.mockResolvedValueOnce(mockJobs);
     render(<JobSearch />);
-    await waitFor(() => expect(screen.getAllByTestId("job-card")).toHaveLength(2));
+    await waitFor(() =>
+      expect(screen.getAllByTestId("job-card")).toHaveLength(2)
+    );
     fireEvent.click(screen.getAllByTestId("job-card")[0]);
     expect(screen.getByTestId("job-info")).toBeInTheDocument();
     expect(screen.getByText(/Frontend Dev/i)).toBeInTheDocument();
@@ -105,7 +117,9 @@ describe("JobSearch", () => {
   it("closes job info when close button is clicked", async () => {
     fetchJobsMock.mockResolvedValueOnce(mockJobs);
     render(<JobSearch />);
-    await waitFor(() => expect(screen.getAllByTestId("job-card")).toHaveLength(2));
+    await waitFor(() =>
+      expect(screen.getAllByTestId("job-card")).toHaveLength(2)
+    );
     fireEvent.click(screen.getAllByTestId("job-card")[0]);
     expect(screen.getByTestId("job-info")).toBeInTheDocument();
     fireEvent.click(screen.getByText(/Close/i));

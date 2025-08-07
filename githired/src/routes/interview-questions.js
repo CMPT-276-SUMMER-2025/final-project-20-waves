@@ -2,7 +2,12 @@
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+import multer from "multer";
+import pdfParse from "pdf-parse";
+
 const router = express.Router();
+const upload = multer();
+
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 router.post("/interview-questions", async (req, res) => {
@@ -87,7 +92,6 @@ Provide your suggestions in bullet points or short paragraphs.
     res.status(500).json({ error: "Failed to generate cover letter feedback" });
   }
 });
-
 
 
 export default router;
