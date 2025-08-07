@@ -1,3 +1,25 @@
+/**
+ * JobInfo component displays detailed information about a job,
+ * including an AI-generated summary and interview questions.
+ *
+ * Props:
+ * - job: Job object containing job details
+ * - onClose: Function to close the component (not used here)
+ *
+ * State:
+ * - aiSummary: Stores AI-generated job summary
+ * - loading: Tracks loading state for summary fetch
+ * - questions: Stores fetched interview questions
+ * - questionsLoading: Loading state for questions fetch
+ * - questionsError: Error message for questions fetch failure
+ * - questionsVisible: Controls interview questions visibility
+ *
+ * Effects & Methods:
+ * - useEffect triggers AI summary fetch on job change, resets questions state
+ * - fetchInterviewQuestions fetches interview questions from backend API
+ * - cleanSnippet removes HTML tags/entities from job snippet for safe display
+ */
+
 import React, { useEffect, useState } from "react";
 import "./JobInfo.css";
 
@@ -19,12 +41,12 @@ interface JobInfoProps {
 const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   const [questions, setQuestions] = useState<string[] | null>(null);
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const [questionsError, setQuestionsError] = useState<string | null>(null);
   const [questionsVisible, setQuestionsVisible] = useState(false);
 
+  // Fetch AI-generated summary on job change and reset interview questions state
   useEffect(() => {
     async function fetchSummary() {
       setLoading(true);
@@ -39,22 +61,16 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
             body: JSON.stringify({ jobs: [job] }),
           }
         );
-
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
         const data = await response.json();
         setAiSummary(data.summary);
-      } catch (error) {
-        console.error("Error fetching AI summary:", error);
+      } catch {
         setAiSummary("Failed to load AI summary.");
       } finally {
         setLoading(false);
       }
     }
 
-    // Reset interview questions state on job change
     setQuestions(null);
     setQuestionsVisible(false);
     setQuestionsError(null);
@@ -62,6 +78,7 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
     fetchSummary();
   }, [job]);
 
+  // Fetch interview questions from backend API
   const fetchInterviewQuestions = async () => {
     setQuestionsLoading(true);
     setQuestionsError(null);
@@ -76,21 +93,17 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
           body: JSON.stringify({ job }),
         }
       );
-
-      if (!res.ok) {
-        throw new Error(`API error: ${res.status}`);
-      }
-
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
       const data = await res.json();
       setQuestions(data.questions);
-    } catch (err) {
-      console.error("Error fetching interview questions:", err);
+    } catch {
       setQuestionsError("Failed to load interview questions.");
     } finally {
       setQuestionsLoading(false);
     }
   };
 
+  // Sanitize job snippet by removing HTML tags and entities
   const cleanSnippet = job.snippet
     ?.replace(/<[^>]+>/g, "")
     .replace(/&nbsp;/g, " ")
@@ -121,13 +134,11 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
         )}
 
         {loading && <p>Loading AI summary...</p>}
-
         {!loading && aiSummary && (
           <p>
             <strong>AI Summary:</strong> {aiSummary}
           </p>
         )}
-
         {!loading && !aiSummary && <p>{cleanSnippet}</p>}
       </div>
 
@@ -146,10 +157,8 @@ const JobInfo: React.FC<JobInfoProps> = ({ job }) => {
         {questionsVisible && (
           <div style={{ marginTop: "1em" }}>
             <h3>Interview Questions</h3>
-
             {questionsLoading && <p>Loading interview questions...</p>}
             {questionsError && <p style={{ color: "red" }}>{questionsError}</p>}
-
             {questions && questions.length > 0 ? (
               <ul>
                 {questions.map((q, i) => (

@@ -1,8 +1,29 @@
+/**
+ * JobSearch component provides a job search interface with:
+ *  - Inputs for keywords, location, salary, and search radius
+ *  - Displays default jobs on first load
+ *  - Shows a grid of JobCard components for search results
+ *  - Displays detailed JobInfo for a selected job
+ *
+ * State:
+ *  - results: array of fetched jobs
+ *  - selectedJob: currently selected job for detailed view
+ *  - hasSearched: boolean indicating if user has performed a search
+ *  - keywords, location, salary, radius: input values for job filtering
+ *
+ * Effects:
+ *  - Loads default jobs once on mount using fetchJobs
+ *
+ * Handlers:
+ *  - handleCardClick: sets the selected job to show details
+ *  - handleSearch: fetches jobs based on input filters and updates results
+ */
+
 import React, { useEffect, useState } from "react";
 import "../css/style.css";
 import "../css/JobSearch.css";
 
-import PageWrapper from '../PageWrapper';
+import PageWrapper from "../PageWrapper";
 import JobCard from "../components/JobCard";
 import JobInfo from "../components/JobInfo";
 import { fetchJobs } from "../fetchJobs";
@@ -17,11 +38,11 @@ const JobSearch = () => {
   const [salary, setSalary] = useState("");
   const [radius, setRadius] = useState("0");
 
-  // Fetch default/random jobs on first render
+  // Load default jobs on component mount
   useEffect(() => {
     const loadDefaultJobs = async () => {
       try {
-        const jobs = await fetchJobs("software", "ontario", "0", "0"); // You can use real default values here
+        const jobs = await fetchJobs("software", "ontario", "0", "0"); // default filters
         setResults(jobs);
       } catch (error) {
         console.error("Error fetching default jobs:", error);
@@ -32,18 +53,15 @@ const JobSearch = () => {
     loadDefaultJobs();
   }, []);
 
+  // Sets the selected job for detailed info display
   const handleCardClick = (job: any) => {
     setSelectedJob(job);
   };
 
+  // Fetch jobs based on search inputs and update results
   const handleSearch = async () => {
     try {
-      const jobs = await fetchJobs(
-        keywords,
-        location,
-        salary,
-        radius
-      );
+      const jobs = await fetchJobs(keywords, location, salary, radius);
       setResults(jobs);
       setHasSearched(true);
     } catch (error) {
@@ -56,7 +74,7 @@ const JobSearch = () => {
     <PageWrapper>
       <div className="wrapper1">
         <div>
-          {/* Search Bar */}
+          {/* Search inputs for filtering jobs */}
           <div className="search-bar">
             <input
               type="text"
@@ -90,17 +108,23 @@ const JobSearch = () => {
         </div>
 
         <div className="jobsearch-container">
-          {/* Grid of Job Cards */}
+          {/* Display grid of job cards */}
           <div className="grid-container">
             {results.map((job) => (
-              <JobCard key={job.id} job={job} onClick={() => handleCardClick(job)} />
+              <JobCard
+                key={job.id}
+                job={job}
+                onClick={() => handleCardClick(job)}
+              />
             ))}
           </div>
 
-          {/* Detailed Job Info */}
+          {/* Show detailed info or no results message */}
           <div className="jobInfo-section">
             {hasSearched && results.length === 0 && (
-              <p style={{ padding: "1rem", color: "red" }}>No jobs found. Please try different keywords.</p>
+              <p style={{ padding: "1rem", color: "red" }}>
+                No jobs found. Please try different keywords.
+              </p>
             )}
             {selectedJob && (
               <JobInfo job={selectedJob} onClose={() => setSelectedJob(null)} />
@@ -113,5 +137,3 @@ const JobSearch = () => {
 };
 
 export default JobSearch;
-
-

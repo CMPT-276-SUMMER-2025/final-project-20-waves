@@ -11,5 +11,10 @@
     "resolveJsonModule": true,
     "outDir": "dist"
   },
-  "include": ["src", "vite.config.ts"]
+  "include": [
+    "src",
+    "vite.config.ts",
+    "test/data/JobSearch.test.tsx",
+    "test/SearchResult.test.tsx"
+  ]
 }
