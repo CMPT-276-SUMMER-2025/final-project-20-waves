@@ -3,6 +3,8 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import JobSearch from "../subpages/JobSearch";
 
+// -- Unit Tests --
+
 // Mock dependencies
 vi.mock("../PageWrapper", () => ({
   __esModule: true,
@@ -108,5 +110,63 @@ describe("JobSearch", () => {
     expect(screen.getByTestId("job-info")).toBeInTheDocument();
     fireEvent.click(screen.getByText(/Close/i));
     expect(screen.queryByTestId("job-info")).not.toBeInTheDocument();
+  });
+
+  // -- Integration Tests --
+
+  it("performs a full search and job info flow", async () => {
+    // 1. User loads the page, jobs are fetched
+    fetchJobsMock.mockResolvedValueOnce(mockJobs);
+    render(<JobSearch />);
+    await waitFor(() => {
+      expect(screen.getAllByTestId("job-card")).toHaveLength(2);
+    });
+
+    // 2. User types in search fields and submits
+    fetchJobsMock.mockResolvedValueOnce([
+      { id: "3", title: "Fullstack Dev" }
+    ]);
+    fireEvent.change(screen.getByPlaceholderText(/Keywords/i), { target: { value: "Fullstack" } });
+    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+    await waitFor(() => {
+      expect(screen.getByText(/Fullstack Dev/i)).toBeInTheDocument();
+    });
+
+    // 3. User clicks a job card, job info modal appears
+    fireEvent.click(screen.getByText(/Fullstack Dev/i));
+    expect(screen.getByTestId("job-info")).toBeInTheDocument();
+    expect(screen.getByText(/Fullstack Dev/i)).toBeInTheDocument();
+
+    // 4. User closes the job info modal
+    fireEvent.click(screen.getByText(/Close/i));
+    expect(screen.queryByTestId("job-info")).not.toBeInTheDocument();
+  });
+
+  it("shows 'No jobs found' after searching with no results", async () => {
+    fetchJobsMock.mockResolvedValueOnce([]);
+    render(<JobSearch />);
+    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+    await waitFor(() => {
+      expect(screen.getByText(/No jobs found/i)).toBeInTheDocument();
+    });
+  });
+
+  it("handles multiple searches and displays correct results each time", async () => {
+    // First search
+    fetchJobsMock.mockResolvedValueOnce([{ id: "1", title: "React Dev" }]);
+    render(<JobSearch />);
+    fireEvent.change(screen.getByPlaceholderText(/Keywords/i), { target: { value: "React" } });
+    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+    await waitFor(() => {
+      expect(screen.getByText(/React Dev/i)).toBeInTheDocument();
+    });
+
+    // Second search
+    fetchJobsMock.mockResolvedValueOnce([{ id: "2", title: "Node Dev" }]);
+    fireEvent.change(screen.getByPlaceholderText(/Keywords/i), { target: { value: "Node" } });
+    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+    await waitFor(() => {
+      expect(screen.getByText(/Node Dev/i)).toBeInTheDocument();
+    });
   });
 });

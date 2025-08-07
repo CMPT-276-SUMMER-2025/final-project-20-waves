@@ -4,6 +4,8 @@ import { describe, expect, it, vi } from "vitest";
 import '@testing-library/jest-dom';
 import JobCard from "../components/JobCard";
 
+// -- Unit Tests --
+
 const mockJob = {
   id: "1",
   title: "Frontend Developer",
@@ -34,6 +36,39 @@ describe("JobCard", () => {
     const onClick = vi.fn();
     render(<JobCard job={mockJob} onClick={onClick} />);
     fireEvent.click(screen.getByText(/Frontend Developer/i).closest(".single-card")!);
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  // -- Integration Tests --
+  
+  it("renders correctly and triggers navigation when clicked (integration)", () => {
+    // Simulate a parent handler that would navigate or open a modal
+    const onCardClick = vi.fn();
+    render(<JobCard job={mockJob} onClick={onCardClick} />);
+    // User clicks anywhere on the card
+    fireEvent.click(screen.getByText(/Frontend Developer/i).closest(".single-card")!);
+    expect(onCardClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders multiple JobCards and handles individual clicks", () => {
+    const jobs = [
+      mockJob,
+      { ...mockJob, id: "2", title: "Backend Developer", company: "Biz Inc" }
+    ];
+    const onClick = vi.fn();
+    render(
+      <>
+        {jobs.map(job => (
+          <JobCard key={job.id} job={job} onClick={onClick} />
+        ))}
+      </>
+    );
+    // Both cards are rendered
+    expect(screen.getByText(/Frontend Developer/i)).toBeInTheDocument();
+    expect(screen.getByText(/Backend Developer/i)).toBeInTheDocument();
+
+    // Click the second card
+    fireEvent.click(screen.getByText(/Backend Developer/i).closest(".single-card")!);
     expect(onClick).toHaveBeenCalled();
   });
 });

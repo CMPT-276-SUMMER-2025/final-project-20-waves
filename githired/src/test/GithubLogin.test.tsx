@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import GithubLogin, { handleGithubLogin } from "../components/GithubLogin";
 import callBackendAPI from "../components/GithubLogin";
 
+// -- Unit Tests --
 
 const OLD_LOCATION = window.location;
 
@@ -56,6 +57,36 @@ describe("GithubLogin", () => {
   afterAll(() => {
     // Restore window.location properties
     Object.assign(window.location, OLD_LOCATION);
+  });
+
+  // -- Integration Tests --
+  
+  it("performs full OAuth flow: redirects and calls backend with code", () => {
+    // Simulate user clicking login and then being redirected back with code
+    render(<GithubLogin />);
+    fireEvent.click(screen.getByRole("button", { name: /login with github/i }));
+    // Simulate redirect with code in URL
+    window.history.replaceState({}, "", "/?code=oauthcode");
+    const callBackendAPISpy = vi.spyOn(
+      { callBackendAPI },
+      "callBackendAPI"
+    ).mockImplementation(() => Promise.resolve(null));
+    // Re-render to trigger useEffect with code in URL
+    render(<GithubLogin />);
+    expect(callBackendAPISpy).toHaveBeenCalledWith(
+      "GET",
+      expect.stringContaining("code=oauthcode")
+    );
+  });
+
+  it("does not call backend if code param is empty string", () => {
+    window.history.replaceState({}, "", "/?code=");
+    const callBackendAPISpy = vi.spyOn(
+      { callBackendAPI },
+      "callBackendAPI"
+    );
+    render(<GithubLogin />);
+    expect(callBackendAPISpy).not.toHaveBeenCalled();
   });
 });
 

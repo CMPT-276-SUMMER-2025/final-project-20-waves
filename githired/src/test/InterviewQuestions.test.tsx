@@ -3,6 +3,8 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import InterviewQuestions from "../components/InterviewQuestions";
 
+// -- Unit Tests --
+
 const mockJob = {
   id: "1",
   title: "Frontend Developer",
@@ -85,5 +87,55 @@ describe("InterviewQuestions", () => {
 
     render(<InterviewQuestions job={mockJob} onClose={vi.fn()} />);
     expect(screen.getByText(/Interview Questions for: Frontend Developer/i)).toBeInTheDocument();
+  });
+
+  // -- Integration Tests --
+
+  it("fetches and displays new questions when job prop changes", async () => {
+    window.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ questions: ["First Q"] }),
+      })
+    ) as any;
+
+    const { rerender } = render(<InterviewQuestions job={mockJob} onClose={vi.fn()} />);
+    await waitFor(() => {
+      expect(screen.getByText("First Q")).toBeInTheDocument();
+    });
+
+    // Change job prop to simulate user selecting a different job
+    (window.fetch as any).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ questions: ["Second Q"] }),
+      })
+    );
+    rerender(<InterviewQuestions job={{ ...mockJob, id: "2", title: "Backend Dev" }} onClose={vi.fn()} />);
+    await waitFor(() => {
+      expect(screen.getByText("Second Q")).toBeInTheDocument();
+    });
+  });
+
+  it("shows loading, error, and then recovers on retry (full flow)", async () => {
+    // First call fails
+    window.fetch = vi.fn(() => Promise.reject(new Error("fail"))) as any;
+
+    const { rerender } = render(<InterviewQuestions job={mockJob} onClose={vi.fn()} />);
+    await waitFor(() => {
+      expect(screen.getByText(/Failed to load interview questions/i)).toBeInTheDocument();
+    });
+
+    // Simulate user retrying by changing job prop
+    (window.fetch as any).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ questions: ["Recovered Q"] }),
+      })
+    );
+    rerender(<InterviewQuestions job={{ ...mockJob, id: "3", title: "DevOps" }} onClose={vi.fn()} />);
+    await waitFor(() => {
+      expect(screen.getByText("Recovered Q")).toBeInTheDocument();
+    });
   });
 });

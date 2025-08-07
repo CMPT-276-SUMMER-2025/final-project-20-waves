@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import CoverLetterH from "../subpages/CoverLetterH";
 
+// -- Unit Tests --
 describe("CoverLetterH", () => {
   beforeEach(() => {
     vi.resetAllMocks();
@@ -92,6 +93,77 @@ describe("CoverLetterH", () => {
 
     await waitFor(() => {
       expect(screen.getByText(/❌ An error occurred while contacting the server/i)).toBeInTheDocument();
+    });
+  });
+
+  // -- Integration Tests --
+  
+   it("submits form and displays feedback in a real user flow", async () => {
+    window.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ feedback: "Personalized feedback for your letter." }),
+      })
+    ) as any;
+
+    render(<CoverLetterH />);
+    fireEvent.change(screen.getByLabelText(/Job Description/i), {
+      target: { value: "React developer job" },
+    });
+    fireEvent.change(screen.getByLabelText(/Your Cover Letter/i), {
+      target: { value: "Dear hiring manager..." },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Get Feedback/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/AI Feedback/i)).toBeInTheDocument();
+      expect(screen.getByText(/Personalized feedback for your letter./i)).toBeInTheDocument();
+    });
+  });
+
+  it("handles user correcting input and resubmitting after an error", async () => {
+    // First, simulate API error
+    window.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve({ error: "Missing fields" }),
+      })
+    ) as any;
+
+    render(<CoverLetterH />);
+    fireEvent.change(screen.getByLabelText(/Job Description/i), {
+      target: { value: "" },
+    });
+    fireEvent.change(screen.getByLabelText(/Your Cover Letter/i), {
+      target: { value: "" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Get Feedback/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/❌ Failed to get feedback/i)).toBeInTheDocument();
+      expect(screen.getByText(/Missing fields/i)).toBeInTheDocument();
+    });
+
+    // Now, simulate user correcting input and successful fetch
+    (window.fetch as any).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ feedback: "Looks good now!" }),
+      })
+    );
+
+    fireEvent.change(screen.getByLabelText(/Job Description/i), {
+      target: { value: "New job description" },
+    });
+    fireEvent.change(screen.getByLabelText(/Your Cover Letter/i), {
+      target: { value: "Updated cover letter" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Get Feedback/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/AI Feedback/i)).toBeInTheDocument();
+      expect(screen.getByText(/Looks good now!/i)).toBeInTheDocument();
     });
   });
 });

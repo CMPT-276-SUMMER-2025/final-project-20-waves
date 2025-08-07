@@ -4,6 +4,8 @@ import '@testing-library/jest-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import JobInfo from "../components/JobInfo";
 
+// -- Unit Tests --
+
 const mockJob = {
   id: "1",
   title: "Frontend Developer",
@@ -63,5 +65,54 @@ describe("JobInfo", () => {
     const link = screen.getByRole("link", { name: /View Full Job Posting/i });
     expect(link).toHaveAttribute("href", mockJob.link);
     expect(link).toHaveAttribute("target", "_blank");
+  });
+
+  // -- Integration Tests --
+
+  it("renders and updates when job prop changes", async () => {
+    const { rerender } = render(<JobInfo job={mockJob} onClose={vi.fn()} />);
+    await waitFor(() => expect(screen.getByText(/AI generated summary/i)).toBeInTheDocument());
+
+    // Change job prop to simulate user selecting a different job
+    const newJob = {
+      ...mockJob,
+      id: "2",
+      title: "Backend Developer",
+      company: "Biz Inc",
+      snippet: "Backend job snippet.",
+      link: "https://example.com/job/2"
+    };
+    (globalThis.fetch as any).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ summary: "Backend summary." }),
+      })
+    );
+    rerender(<JobInfo job={newJob} onClose={vi.fn()} />);
+    expect(screen.getByText(/Backend Developer/i)).toBeInTheDocument();
+    expect(screen.getByText(/Biz Inc/i)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/Backend summary/i)).toBeInTheDocument());
+  });
+
+  it("shows loading, error, and then recovers on retry (full flow)", async () => {
+    // First call fails
+    (globalThis.fetch as any).mockImplementationOnce(() => Promise.reject(new Error("fail")));
+    const { rerender } = render(<JobInfo job={mockJob} onClose={vi.fn()} />);
+    await waitFor(() => {
+      expect(screen.getByText(/Failed to load AI summary/i)).toBeInTheDocument();
+    });
+
+    // Simulate user retrying by changing job prop
+    (globalThis.fetch as any).mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ summary: "Recovered summary." }),
+      })
+    );
+    rerender(<JobInfo job={{ ...mockJob, id: "3", title: "DevOps" }} onClose={vi.fn()} />);
+    await waitFor(() => {
+      expect(screen.getByText("DevOps")).toBeInTheDocument();
+      expect(screen.getByText("Recovered summary.")).toBeInTheDocument();
+    });
   });
 });

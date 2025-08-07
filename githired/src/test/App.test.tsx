@@ -1,8 +1,9 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import App from "../App";
+// -- Unit Tests --
 
 // Mock subpages
 vi.mock("./subpages/Home", () => ({
@@ -68,5 +69,44 @@ describe("App routing", () => {
     expect(screen.getByRole("link", { name: /JobSearch/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Portfolio/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Interview/i })).toBeInTheDocument();
+  });
+
+  // -- Integration Tests --
+
+  it("navigates to JobSearch page when JobSearch link is clicked", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>
+    );
+    fireEvent.click(screen.getByRole("link", { name: /JobSearch/i }));
+    // Wait for navigation
+    await waitFor(() => {
+      expect(screen.getByText(/Job Search Page/i)).toBeInTheDocument();
+    });
+  });
+
+  it("navigates to Portfolio page when Portfolio link is clicked", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>
+    );
+    fireEvent.click(screen.getByRole("link", { name: /Portfolio/i }));
+    await waitFor(() => {
+      expect(screen.getByText(/Portfolio Page/i)).toBeInTheDocument();
+    });
+  });
+
+  it("navigates to Interview page when Interview link is clicked", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>
+    );
+    fireEvent.click(screen.getByRole("link", { name: /Interview/i }));
+    await waitFor(() => {
+      expect(screen.getByText(/Interview Page/i)).toBeInTheDocument();
+    });
   });
 });

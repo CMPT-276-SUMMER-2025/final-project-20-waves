@@ -5,6 +5,8 @@ import "@testing-library/jest-dom";
 import Portfolio from "../subpages/Portfolio";
 import { MemoryRouter } from "react-router-dom";
 
+// -- Unit Tests --
+
 beforeEach(() => {
   Storage.prototype.getItem = vi.fn(() => null);
   Storage.prototype.setItem = vi.fn();
@@ -78,5 +80,52 @@ describe("Portfolio", () => {
     expect(
       screen.getByPlaceholderText(/start typing university/i)
     ).toBeInTheDocument();
+  });
+
+  // -- Integration Tests --
+
+  it("fills out profile and navigates between tabs (integration)", async () => {
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
+    // Fill out profile fields
+    fireEvent.change(screen.getByPlaceholderText(/Name/i), { target: { value: "Bob" } });
+    fireEvent.change(screen.getByPlaceholderText(/Birth/i), { target: { value: "2000-01-01" } });
+    fireEvent.change(screen.getByPlaceholderText(/Email/i), { target: { value: "bob@example.com" } });
+    fireEvent.change(screen.getByPlaceholderText(/Address/i), { target: { value: "123 Main St" } });
+
+    expect(screen.getByPlaceholderText(/Name/i)).toHaveValue("Bob");
+    expect(screen.getByPlaceholderText(/Birth/i)).toHaveValue("2000-01-01");
+    expect(screen.getByPlaceholderText(/Email/i)).toHaveValue("bob@example.com");
+    expect(screen.getByPlaceholderText(/Address/i)).toHaveValue("123 Main St");
+
+    // Switch to Projects tab and check content
+    fireEvent.click(screen.getByText(/Projects/i));
+    expect(screen.getByText(/content here/i)).toBeInTheDocument();
+
+    // Switch to Skills summary tab and check content
+    fireEvent.click(screen.getByText(/Skills summary/i));
+    expect(screen.getByText(/content here/i)).toBeInTheDocument();
+
+    // Switch to Education tab and check autocomplete
+    fireEvent.click(screen.getByText(/Education/i));
+    expect(screen.getByPlaceholderText(/start typing university/i)).toBeInTheDocument();
+  });
+
+  it("persists name to localStorage and retrieves it on reload (integration)", async () => {
+    // Simulate localStorage having a saved name
+    (Storage.prototype.getItem as any).mockImplementation((key: string) => {
+      if (key === "name") return "Charlie";
+      return null;
+    });
+
+    render(
+      <MemoryRouter>
+        <Portfolio />
+      </MemoryRouter>
+    );
+    expect(screen.getByPlaceholderText(/Name/i)).toHaveValue("Charlie");
   });
 });

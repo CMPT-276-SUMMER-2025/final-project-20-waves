@@ -1,8 +1,10 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import Home from "../subpages/Home";
 import { MemoryRouter } from "react-router-dom";
+
+// -- Unit Tests --
 
 // Mock PageWrapper to just render children
 vi.mock("../PageWrapper", () => ({
@@ -77,4 +79,39 @@ describe("Home", () => {
     expect(screen.getByAltText(/Portfolio/i)).toBeInTheDocument();
     expect(screen.getByAltText(/Interview/i)).toBeInTheDocument();
   });
+
+  // -- Integration Tests --
+  
+  it("navigates to login page when login button is clicked", () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+    const loginLink = screen.getByRole("link", { name: /login/i });
+    expect(loginLink).toHaveAttribute("href", "/login");
+  });
+
+  it("navigates to signup page when sign up button is clicked", () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+    const signupLink = screen.getByRole("link", { name: /sign up/i });
+    expect(signupLink).toHaveAttribute("href", "/signup");
+  });
+
+  it("renders and can click the Github login button", () => {
+    render(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>
+    );
+    const githubButton = screen.getByRole("button", { name: /github/i });
+    expect(githubButton).toBeInTheDocument();
+    fireEvent.click(githubButton);
+    // No error means the button is clickable and present
+  });
+  
 });
