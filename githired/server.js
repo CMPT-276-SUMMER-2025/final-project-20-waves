@@ -43,12 +43,12 @@ router.post(
 export default router;
 
 // API keys
-const JOOBLE_API_KEY = "ec5e7f3c-25e2-4016-be55-b47e3ff4560a";
-const GEMINI_API_KEY = "AIzaSyCPg2LanlGaziWXu72ddmVmyWbODbNqt2E";
+const JOOBLE_API_KEY = process.env.JOOBLE_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const PORT = 5000;
-const GITHUB_CLIENT_ID = "Iv23lim0mPy31j2pxNbg";
-const GITHUB_SECRET_ID = "e755902fc5e092250b7dec0cdeaf89d525be17ab";
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
+const GITHUB_SECRET_ID = process.env.GITHUB_SECRET_ID;
 
 const ai = new GoogleGenerativeAI(GEMINI_API_KEY); // Initialize Gemini AI client
 
