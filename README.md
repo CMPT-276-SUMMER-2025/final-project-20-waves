@@ -24,3 +24,9 @@ Local Host Steps:
 5. In the first terminal, navigate to "./githired" and type "npm run dev"
 6. The project should run, but the features don't work on local host, as the APIs route to the deployed website instead. 
  Everything except for Jobsearch and Cover Letter Helper should be functional.
+
+ [Link to Website](https://githired-ntxa.onrender.com)
+ [Link to Milestone 0 Report - Project Proposal](https://docs.google.com/document/d/1UlqpUmrfWzh_SCIBv36YqOCdnbAIFuv0yfJe0D2IPxI/edit?usp=sharing)
+ [Link to Milestone 1 Report - Project Planning](https://docs.google.com/document/d/1--p4z5g8AD5nh3ziB_MoqG85qZubqKU2dwxZ1_3sboY/edit?usp=sharing)
+ [Link to Milestone 2 Report - Final Report](https://docs.google.com/document/d/1YQVes0gfRxsA9kI3ShQ2oyFliIuXH4cfHFB7d20TK_c/edit?usp=sharing)
+ [Link to Video](https://drive.google.com/file/d/1jXGiOMHSUTLBg4_lHMwNLtq3nWHC0TH9/view?usp=sharing)
