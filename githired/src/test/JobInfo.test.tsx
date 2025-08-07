@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import JobInfo from "./JobInfo";
+import JobInfo from "../components/JobInfo";
 
 const mockJob = {
   id: "1",

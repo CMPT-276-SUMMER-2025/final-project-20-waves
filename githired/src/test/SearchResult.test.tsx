@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import { SearchResult } from "./SearchResult";
+import { SearchResult } from "../components/SearchResult";
 
 const mockResult = {
   title: "Frontend Developer",

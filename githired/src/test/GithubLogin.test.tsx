@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import GithubLogin, { handleGithubLogin } from "./GithubLogin";
-import callBackendAPI from "./GithubLogin";
+import GithubLogin, { handleGithubLogin } from "../components/GithubLogin";
+import callBackendAPI from "../components/GithubLogin";
 
 
 const OLD_LOCATION = window.location;

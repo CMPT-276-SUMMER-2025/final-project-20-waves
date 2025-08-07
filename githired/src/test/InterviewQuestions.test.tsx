@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import InterviewQuestions from "./InterviewQuestions";
+import InterviewQuestions from "../components/InterviewQuestions";
 
 const mockJob = {
   id: "1",

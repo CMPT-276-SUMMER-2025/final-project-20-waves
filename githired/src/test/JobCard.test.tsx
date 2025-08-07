@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import '@testing-library/jest-dom';
-import JobCard from "./JobCard";
+import JobCard from "../components/JobCard";
 
 const mockJob = {
   id: "1",

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
-import Home from "./Home";
+import Home from "../subpages/Home";
 import { MemoryRouter } from "react-router-dom";
 
 // Mock PageWrapper to just render children
